@@ -14,4 +14,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Memory Matching.unity
     guid: 2953b2b4e1b2da545bc2c91516aff19e
+  - enabled: 1
+    path: Assets/Scenes/Memory Matching Lvl2.unity
+    guid: 415a9938d64f39b4fa895a4dbbd409aa
+  - enabled: 1
+    path: Assets/Scenes/Memory Matching Lvl3.unity
+    guid: 296f24041d716a843ba08f9aeb3f5c4b
+  - enabled: 1
+    path: Assets/Scenes/Animal Habitat Match.unity
+    guid: 639413a3c9cb57649804aaca92122d3c
+  - enabled: 1
+    path: Assets/Scenes/Word Game.unity
+    guid: 7296aa2a17f35ee409eac5b091eeded6
   m_configObjects: {}

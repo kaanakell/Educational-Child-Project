@@ -8,6 +8,7 @@ TagManager:
   - Water
   - Arctic
   - Jungle
+  - Ball
   layers:
   - Default
   - TransparentFX

@@ -6,54 +6,55 @@ using UnityEngine.UI;
 
 public class BallSpawner : MonoBehaviour
 {
-    public GameObject ballPrefab; // Reference to the prefab of the ball
-    public Transform spawnArea; // The area where balls will spawn
-    public int maxBalls = 15; // Maximum number of balls to spawn
-    public float spawnInterval = 0.1f; // Time interval between each spawn
-    public string[] words; // Array of pre-determined words
-    public TMP_InputField inputField; // Reference to the TMP_InputField in the canvas
-    public Image buttonImage; // Reference to the button's Image component
-    public Sprite buttonSelectedSprite; // Sprite to change when balls are selected
-    public Sprite buttonDefaultSprite; // Default sprite for the button
-    public Color correctWordColor = Color.green; // Color to change the input field when a correct word is formed
-    public Color incorrectWordColor = Color.red; // Color to change the input field when an incorrect word is formed
-    public float incorrectWordClearDelay = 2f; // Delay before clearing the input field for an incorrect word
+    public GameObject ballPrefab;
+    public Transform spawnArea;
+    public int maxBalls = 15;
+    public float spawnInterval = 0.1f;
+    public string[] words;
+    public TMP_InputField inputField;
+    public Image buttonImage;
+    public Button hintButton;  // Reference to the hint button
+    public Sprite buttonSelectedSprite;
+    public Sprite buttonDefaultSprite;
+    public Sprite highlightedSprite;
+    public Sprite normalSprite;
+    public Color correctWordColor = Color.green;
+    public Color incorrectWordColor = Color.red;
+    public float incorrectWordClearDelay = 2f;
 
-    private List<string> wordList = new List<string>(); // List to store pre-determined words
-    private List<GameObject> spawnedBalls = new List<GameObject>(); // List to store spawned balls
-    private HashSet<GameObject> clickedBalls = new HashSet<GameObject>(); // Set to track clicked balls
+    private List<string> wordList = new List<string>();
+    private List<GameObject> spawnedBalls = new List<GameObject>();
+    private HashSet<GameObject> clickedBalls = new HashSet<GameObject>();
+    private string currentHintWord = "";  // Store the current hint word
+    private List<GameObject> hintBalls = new List<GameObject>();  // Store balls for the hint word
 
     void Start()
     {
-        // Populate the word list from the array
         foreach (string word in words)
         {
-            wordList.Add(word.ToLower()); // Convert all words to lowercase for case-insensitive comparison
+            wordList.Add(word.ToLower());
         }
 
-        // Subscribe the button click event to the CheckWord function
         Button button = buttonImage.GetComponent<Button>();
         button.onClick.AddListener(CheckWord);
-
-        // Set the button's default sprite
         buttonImage.sprite = buttonDefaultSprite;
+
+        // Add listener to hint button
+        hintButton.onClick.AddListener(UseHint);
 
         StartCoroutine(SpawnBallsCoroutine());
     }
 
     IEnumerator SpawnBallsCoroutine()
     {
-        // Choose a guaranteed meaningful word from the word list
         string guaranteedWord = wordList[Random.Range(0, wordList.Count)];
 
-        // Spawn balls with letters from the guaranteed word
         foreach (char letter in guaranteedWord)
         {
             SpawnBallWithLetter(letter.ToString());
             yield return new WaitForSeconds(spawnInterval);
         }
 
-        // Spawn additional balls with random letters to fill the remaining slots
         for (int i = 0; i < maxBalls - guaranteedWord.Length; i++)
         {
             SpawnBallWithRandomLetter();
@@ -66,7 +67,7 @@ public class BallSpawner : MonoBehaviour
         Vector3 randomPosition = GetRandomPositionInSpawnArea();
         GameObject ball = Instantiate(ballPrefab, randomPosition, Quaternion.identity);
         AssignLetterToBall(ball, letter);
-        AddColliderToBall(ball); // Add Collider2D component to enable interaction
+        AddColliderToBall(ball);
         spawnedBalls.Add(ball);
     }
 
@@ -77,50 +78,10 @@ public class BallSpawner : MonoBehaviour
     }
 
     string GetRandomLetter()
-{
-    // Separate vowels and consonants
-    List<string> vowels = new List<string>();
-    List<string> consonants = new List<string>();
-
-    foreach (string word in wordList)
     {
-        foreach (char letter in word)
-        {
-            string letterStr = letter.ToString();
-            if (IsVowel(letterStr))
-            {
-                vowels.Add(letterStr);
-            }
-            else
-            {
-                consonants.Add(letterStr);
-            }
-        }
+        string allLetters = "abcdefghijklmnopqrstuvwxyz";
+        return allLetters[Random.Range(0, allLetters.Length)].ToString();
     }
-
-    // Choose randomly from both categories
-    if (Random.value < 0.5f && vowels.Count > 0)
-    {
-        return vowels[Random.Range(0, vowels.Count)];
-    }
-    else if (consonants.Count > 0)
-    {
-        return consonants[Random.Range(0, consonants.Count)];
-    }
-    else
-    {
-        // If one of the lists is empty, fallback to choosing randomly from the entire word list
-        return wordList[Random.Range(0, wordList.Count)].Substring(0, 1);
-    }
-}
-
-bool IsVowel(string letter)
-{
-    // Define your own logic for determining vowels
-    string vowels = "aeiou";
-    return vowels.Contains(letter.ToLower());
-}
-
 
     void AssignLetterToBall(GameObject ball, string letter)
     {
@@ -129,7 +90,7 @@ bool IsVowel(string letter)
             TextMeshPro textMesh = ball.GetComponentInChildren<TextMeshPro>();
             if (textMesh != null)
             {
-                textMesh.text = letter.ToUpper(); // Convert the letter to uppercase
+                textMesh.text = letter.ToUpper();
             }
         }
     }
@@ -138,7 +99,7 @@ bool IsVowel(string letter)
     {
         if (ball != null)
         {
-            ball.AddComponent<CircleCollider2D>(); // Adding CircleCollider2D for simplicity
+            ball.AddComponent<CircleCollider2D>();
         }
     }
 
@@ -147,19 +108,53 @@ bool IsVowel(string letter)
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePosition = Input.mousePosition;
-            mousePosition.z = 10; // Distance from the camera
+            mousePosition.z = 10;
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
             Collider2D hitCollider = Physics2D.OverlapPoint(worldPosition);
             if (hitCollider != null)
             {
                 GameObject hitObject = hitCollider.gameObject;
-                if (!clickedBalls.Contains(hitObject) && IsBallClickable(hitObject))
+                if (IsBallClickable(hitObject))
                 {
-                    OnBallClick(hitObject);
-                    clickedBalls.Add(hitObject);
-                    buttonImage.sprite = buttonSelectedSprite; // Change the button sprite when balls are selected
+                    if (clickedBalls.Contains(hitObject))
+                    {
+                        ClearLetterFromInput(hitObject);
+                        clickedBalls.Remove(hitObject);
+                        SetBallAppearance(hitObject, false);
+                    }
+                    else
+                    {
+                        OnBallClick(hitObject);
+                        clickedBalls.Add(hitObject);
+                        SetBallAppearance(hitObject, true);
+                    }
                 }
+            }
+        }
+
+        // Change the apply button sprite based on the input field content
+        if (inputField.text.Length > 0)
+        {
+            buttonImage.sprite = buttonSelectedSprite;
+        }
+        else
+        {
+            buttonImage.sprite = buttonDefaultSprite;
+        }
+    }
+
+
+    void ClearLetterFromInput(GameObject ball)
+    {
+        TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
+        if (letterText != null)
+        {
+            string letter = letterText.text;
+            int lastIndex = inputField.text.LastIndexOf(letter);
+            if (lastIndex != -1)
+            {
+                inputField.text = inputField.text.Remove(lastIndex, 1);
             }
         }
     }
@@ -169,81 +164,211 @@ bool IsVowel(string letter)
         TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
         if (letterText != null)
         {
-            inputField.text += letterText.text; // Append the clicked letter to the input field
+            string letter = letterText.text;
+            inputField.text += letter;
         }
     }
-    void SpawnNewBalls(int count)
+
+    void SetBallAppearance(GameObject ball, bool highlight)
     {
-        int ballsToSpawn = Random.Range(4, 6); // Randomly spawn either 3 or 5 balls
-        for (int i = 0; i < ballsToSpawn; i++)
+        SpriteRenderer renderer = ball.GetComponent<SpriteRenderer>();
+        if (renderer != null)
         {
-            SpawnBallWithRandomLetter();
+            renderer.sprite = highlight ? highlightedSprite : normalSprite;
         }
     }
-
-
 
     public void CheckWord()
     {
         string inputText = inputField.text.ToLower();
-
-        // Check if the input word is in the word list
         if (wordList.Contains(inputText))
         {
-            inputField.image.color = correctWordColor; // Change input field color to green
-            DestroyClickedBalls(); // Destroy clicked balls if the word is correct
+            inputField.image.color = correctWordColor;
+            DestroyClickedBalls();
+            DestroyHintedBalls();  // Destroy hint balls if correct word is formed
             StartCoroutine(ClearFieldAfterDelay());
         }
         else
         {
-            inputField.image.color = incorrectWordColor; // Change input field color to red for incorrect word
-
-            // Clear the input field after a brief delay for an incorrect word
+            inputField.image.color = incorrectWordColor;
             StartCoroutine(ClearFieldAfterDelay());
         }
+
+        // Reset the appearance of all clicked balls
+        ResetBallAppearances();
     }
+
+    void ResetBallAppearances()
+    {
+        foreach (GameObject ball in clickedBalls)
+        {
+            SetBallAppearance(ball, false);
+        }
+        clickedBalls.Clear();
+
+        foreach (GameObject ball in hintBalls)
+        {
+            SetBallAppearance(ball, false);
+        }
+        hintBalls.Clear();
+    }
+
 
     IEnumerator ClearFieldAfterDelay()
     {
         yield return new WaitForSeconds(incorrectWordClearDelay);
-        inputField.text = ""; // Clear the input field
-        inputField.image.color = Color.white; // Reset input field color
-        buttonImage.sprite = buttonDefaultSprite; // Reset the button sprite
-
-        // Clear the set of clicked balls when the input field is empty
+        inputField.text = "";
+        inputField.image.color = Color.white;
+        buttonImage.sprite = buttonDefaultSprite;
         clickedBalls.Clear();
+        hintBalls.Clear();  // Clear the hint balls list
+        ResetBallAppearances();  // Ensure all balls are reset
     }
+
 
     void DestroyClickedBalls()
     {
         foreach (GameObject ball in clickedBalls)
         {
-            if (ball != null && ball.CompareTag("Ball")) // Check if the object is a ball
+            if (ball != null)
             {
                 Destroy(ball);
             }
         }
-        clickedBalls.Clear(); // Clear the set of clicked balls
+        clickedBalls.Clear();
+        SpawnNewBalls(5);
+    }
 
-        // Spawn 5 new balls
-        SpawnNewBalls(Random.Range(5,6));
+    void DestroyHintedBalls()
+    {
+        foreach (GameObject ball in hintBalls)
+        {
+            if (ball != null)
+            {
+                Destroy(ball);
+            }
+        }
+        hintBalls.Clear();
+        //SpawnNewBalls(5);
+    }
+
+    void SpawnNewBalls(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            SpawnBallWithRandomLetter();
+        }
+    }
+
+    public void ShowHintWord()
+    {
+        currentHintWord = FindHintWord();
+        if (!string.IsNullOrEmpty(currentHintWord))
+        {
+            inputField.text = "";
+            // Show the hint word in the input field and highlight corresponding letters
+            HighlightLettersForWord(currentHintWord);
+            hintButton.GetComponentInChildren<TextMeshProUGUI>().text = "Hint: " + currentHintWord.ToUpper();
+        }
+    }
+
+    void UseHint()
+    {
+        if (!string.IsNullOrEmpty(currentHintWord))
+        {
+            inputField.text = currentHintWord.ToUpper();
+            buttonImage.sprite = buttonSelectedSprite;  // Change the sprite when hint is used
+        }
     }
 
 
-    bool IsBallClickable(GameObject ball)
+    string FindHintWord()
     {
-        return !clickedBalls.Contains(ball);
+        Dictionary<char, int> letterCounts = new Dictionary<char, int>();
+        foreach (GameObject ball in spawnedBalls)
+        {
+            TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
+            if (letterText != null)
+            {
+                char letter = letterText.text.ToLower()[0];
+                if (letterCounts.ContainsKey(letter))
+                {
+                    letterCounts[letter]++;
+                }
+                else
+                {
+                    letterCounts[letter] = 1;
+                }
+            }
+        }
+
+        foreach (string word in wordList)
+        {
+            Dictionary<char, int> wordLetterCounts = new Dictionary<char, int>();
+            foreach (char letter in word)
+            {
+                if (wordLetterCounts.ContainsKey(letter))
+                {
+                    wordLetterCounts[letter]++;
+                }
+                else
+                {
+                    wordLetterCounts[letter] = 1;
+                }
+            }
+
+            bool canFormWord = true;
+            foreach (var kvp in wordLetterCounts)
+            {
+                if (!letterCounts.ContainsKey(kvp.Key) || letterCounts[kvp.Key] < kvp.Value)
+                {
+                    canFormWord = false;
+                    break;
+                }
+            }
+
+            if (canFormWord)
+            {
+                return word;
+            }
+        }
+        return "";
+    }
+
+    void HighlightLettersForWord(string word)
+    {
+        inputField.text = "";
+        List<GameObject> usedBalls = new List<GameObject>();
+
+        foreach (char letter in word)
+        {
+            foreach (GameObject ball in spawnedBalls)
+            {
+                TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
+                if (letterText != null && letterText.text.ToLower() == letter.ToString() && !usedBalls.Contains(ball))
+                {
+                    inputField.text += letterText.text.ToUpper();
+                    SetBallAppearance(ball, true);
+                    usedBalls.Add(ball);
+                    hintBalls.Add(ball);  // Add to hint balls list
+                    break;
+                }
+            }
+        }
     }
 
     Vector3 GetRandomPositionInSpawnArea()
     {
         Vector3 center = spawnArea.position;
         Vector3 size = spawnArea.localScale;
-
         float randomX = Random.Range(center.x - size.x / 2, center.x + size.x / 2);
         float randomY = Random.Range(center.y - size.y / 2, center.y + size.y / 2);
         float randomZ = Random.Range(center.z - size.z / 2, center.z + size.z / 2);
-
         return new Vector3(randomX, randomY, randomZ);
+    }
+
+    bool IsBallClickable(GameObject ball)
+    {
+        return ball.CompareTag("Ball");
     }
 }

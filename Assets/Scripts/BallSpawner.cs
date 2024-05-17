@@ -13,7 +13,7 @@ public class BallSpawner : MonoBehaviour
     public string[] words;
     public TMP_InputField inputField;
     public Image buttonImage;
-    public Button hintButton;  // Reference to the hint button
+    public Button hintButton;
     public Sprite buttonSelectedSprite;
     public Sprite buttonDefaultSprite;
     public Sprite highlightedSprite;
@@ -21,12 +21,20 @@ public class BallSpawner : MonoBehaviour
     public Color correctWordColor = Color.green;
     public Color incorrectWordColor = Color.red;
     public float incorrectWordClearDelay = 2f;
+    public TextMeshProUGUI heartText;
+    public TextMeshProUGUI starText;
+    public int maxHints = 3;
+    public Button heartButton;
 
     private List<string> wordList = new List<string>();
     private List<GameObject> spawnedBalls = new List<GameObject>();
     private HashSet<GameObject> clickedBalls = new HashSet<GameObject>();
-    private string currentHintWord = "";  // Store the current hint word
-    private List<GameObject> hintBalls = new List<GameObject>();  // Store balls for the hint word
+    private List<GameObject> hintBalls = new List<GameObject>();
+    private string currentHintWord = "";
+    private int hintsUsed = 0;
+    private int wordsFound = 0;
+    private int wordsToFind = 3;
+    private int sessionNumber = 1;
 
     void Start()
     {
@@ -38,9 +46,9 @@ public class BallSpawner : MonoBehaviour
         Button button = buttonImage.GetComponent<Button>();
         button.onClick.AddListener(CheckWord);
         buttonImage.sprite = buttonDefaultSprite;
-
-        // Add listener to hint button
-        hintButton.onClick.AddListener(UseHint);
+        hintButton.onClick.AddListener(ShowHintWord);
+        heartButton.onClick.AddListener(SpawnNewLettersIfNoWords);
+        UpdateUI();
 
         StartCoroutine(SpawnBallsCoroutine());
     }
@@ -79,7 +87,7 @@ public class BallSpawner : MonoBehaviour
 
     string GetRandomLetter()
     {
-        string allLetters = "abcdefghijklmnopqrstuvwxyz";
+        string allLetters = "abcdefghıjklmnopqrstuvwxyz";
         return allLetters[Random.Range(0, allLetters.Length)].ToString();
     }
 
@@ -133,7 +141,6 @@ public class BallSpawner : MonoBehaviour
             }
         }
 
-        // Change the apply button sprite based on the input field content
         if (inputField.text.Length > 0)
         {
             buttonImage.sprite = buttonSelectedSprite;
@@ -143,7 +150,6 @@ public class BallSpawner : MonoBehaviour
             buttonImage.sprite = buttonDefaultSprite;
         }
     }
-
 
     void ClearLetterFromInput(GameObject ball)
     {
@@ -185,8 +191,13 @@ public class BallSpawner : MonoBehaviour
         {
             inputField.image.color = correctWordColor;
             DestroyClickedBalls();
-            DestroyHintedBalls();  // Destroy hint balls if correct word is formed
+            DestroyHintedBalls();
             StartCoroutine(ClearFieldAfterDelay());
+            wordsFound++;
+            if (wordsFound >= wordsToFind)
+            {
+                StartNewSession();
+            }
         }
         else
         {
@@ -194,8 +205,8 @@ public class BallSpawner : MonoBehaviour
             StartCoroutine(ClearFieldAfterDelay());
         }
 
-        // Reset the appearance of all clicked balls
         ResetBallAppearances();
+        UpdateUI();
     }
 
     void ResetBallAppearances()
@@ -213,7 +224,6 @@ public class BallSpawner : MonoBehaviour
         hintBalls.Clear();
     }
 
-
     IEnumerator ClearFieldAfterDelay()
     {
         yield return new WaitForSeconds(incorrectWordClearDelay);
@@ -221,10 +231,9 @@ public class BallSpawner : MonoBehaviour
         inputField.image.color = Color.white;
         buttonImage.sprite = buttonDefaultSprite;
         clickedBalls.Clear();
-        hintBalls.Clear();  // Clear the hint balls list
-        ResetBallAppearances();  // Ensure all balls are reset
+        hintBalls.Clear();
+        ResetBallAppearances();
     }
-
 
     void DestroyClickedBalls()
     {
@@ -249,7 +258,6 @@ public class BallSpawner : MonoBehaviour
             }
         }
         hintBalls.Clear();
-        //SpawnNewBalls(5);
     }
 
     void SpawnNewBalls(int count)
@@ -262,31 +270,42 @@ public class BallSpawner : MonoBehaviour
 
     public void ShowHintWord()
     {
+        if (hintsUsed >= maxHints)
+        {
+            return;
+        }
+
         currentHintWord = FindHintWord();
         if (!string.IsNullOrEmpty(currentHintWord))
         {
-            inputField.text = "";
-            // Show the hint word in the input field and highlight corresponding letters
             HighlightLettersForWord(currentHintWord);
-            hintButton.GetComponentInChildren<TextMeshProUGUI>().text = "Hint: " + currentHintWord.ToUpper();
+            hintsUsed++;
+            UpdateUI();
         }
     }
-
-    void UseHint()
-    {
-        if (!string.IsNullOrEmpty(currentHintWord))
-        {
-            inputField.text = currentHintWord.ToUpper();
-            buttonImage.sprite = buttonSelectedSprite;  // Change the sprite when hint is used
-        }
-    }
-
 
     string FindHintWord()
+    {
+        foreach (string word in wordList)
+        {
+            if (CanFormWord(word))
+            {
+                return word;
+            }
+        }
+        return null;
+    }
+
+    bool CanFormWord(string word)
     {
         Dictionary<char, int> letterCounts = new Dictionary<char, int>();
         foreach (GameObject ball in spawnedBalls)
         {
+            if (ball == null)
+            {
+                continue;
+            }
+
             TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
             if (letterText != null)
             {
@@ -302,59 +321,69 @@ public class BallSpawner : MonoBehaviour
             }
         }
 
-        foreach (string word in wordList)
+        foreach (char letter in word)
         {
-            Dictionary<char, int> wordLetterCounts = new Dictionary<char, int>();
-            foreach (char letter in word)
+            if (letterCounts.ContainsKey(letter) && letterCounts[letter] > 0)
             {
-                if (wordLetterCounts.ContainsKey(letter))
-                {
-                    wordLetterCounts[letter]++;
-                }
-                else
-                {
-                    wordLetterCounts[letter] = 1;
-                }
+                letterCounts[letter]--;
             }
-
-            bool canFormWord = true;
-            foreach (var kvp in wordLetterCounts)
+            else
             {
-                if (!letterCounts.ContainsKey(kvp.Key) || letterCounts[kvp.Key] < kvp.Value)
-                {
-                    canFormWord = false;
-                    break;
-                }
-            }
-
-            if (canFormWord)
-            {
-                return word;
+                return false;
             }
         }
-        return "";
+
+        return true;
     }
 
     void HighlightLettersForWord(string word)
     {
-        inputField.text = "";
-        List<GameObject> usedBalls = new List<GameObject>();
-
+        hintBalls.Clear();
         foreach (char letter in word)
         {
             foreach (GameObject ball in spawnedBalls)
             {
-                TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
-                if (letterText != null && letterText.text.ToLower() == letter.ToString() && !usedBalls.Contains(ball))
+                if (ball == null)
                 {
-                    inputField.text += letterText.text.ToUpper();
-                    SetBallAppearance(ball, true);
-                    usedBalls.Add(ball);
-                    hintBalls.Add(ball);  // Add to hint balls list
-                    break;
+                    continue;
+                }
+
+                TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
+                if (letterText != null && letterText.text.Equals(letter.ToString(), System.StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!hintBalls.Contains(ball))
+                    {
+                        hintBalls.Add(ball);
+                        SetBallAppearance(ball, true);
+                        break;
+                    }
                 }
             }
         }
+    }
+
+    void UpdateUI()
+    {
+        heartText.text = $"{wordsFound}/{wordsToFind}";
+        starText.text = $"{maxHints - hintsUsed}/{maxHints}";
+    }
+
+    void StartNewSession()
+    {
+        sessionNumber++;
+        wordsFound = 0;
+        hintsUsed = 0;
+        wordsToFind = (sessionNumber == 1) ? 3 : sessionNumber == 2 ? 5 : 10;  // Adjust words to find based on the session
+        maxBalls += sessionNumber * 5;  // Increase difficulty by increasing the number of balls
+        foreach (GameObject ball in spawnedBalls)
+        {
+            if (ball != null)
+            {
+                Destroy(ball);
+            }
+        }
+        spawnedBalls.Clear();
+        StartCoroutine(SpawnBallsCoroutine());
     }
 
     Vector3 GetRandomPositionInSpawnArea()
@@ -370,5 +399,18 @@ public class BallSpawner : MonoBehaviour
     bool IsBallClickable(GameObject ball)
     {
         return ball.CompareTag("Ball");
+    }
+
+    void SpawnNewLettersIfNoWords()
+    {
+        string hintWord = FindHintWord();
+        if (hintWord == null)
+        {
+            int lettersNeeded = Random.Range(3, 6);  // Adjust the number of new letters as needed
+            for (int i = 0; i < lettersNeeded; i++)
+            {
+                SpawnBallWithRandomLetter();
+            }
+        }
     }
 }

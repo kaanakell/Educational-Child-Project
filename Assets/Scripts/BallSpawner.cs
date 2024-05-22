@@ -87,7 +87,7 @@ public class BallSpawner : MonoBehaviour
 
     string GetRandomLetter()
     {
-        string allLetters = "abcdefghıjklmnopqrstuvwxyz";
+        string allLetters = "abcdefghijklmnopqrstuvwxyz";
         return allLetters[Random.Range(0, allLetters.Length)].ToString();
     }
 
@@ -269,20 +269,29 @@ public class BallSpawner : MonoBehaviour
     }
 
     public void ShowHintWord()
-    {
-        if (hintsUsed >= maxHints)
-        {
-            return;
-        }
+{
+    Debug.Log($"ShowHintWord called. hintsUsed: {hintsUsed}, maxHints: {maxHints}");
 
-        currentHintWord = FindHintWord();
-        if (!string.IsNullOrEmpty(currentHintWord))
-        {
-            HighlightLettersForWord(currentHintWord);
-            hintsUsed++;
-            UpdateUI();
-        }
+    if (hintsUsed >= maxHints)
+    {
+        Debug.Log("No more hints available.");
+        return;
     }
+
+    currentHintWord = FindHintWord();
+    if (!string.IsNullOrEmpty(currentHintWord))
+    {
+        HighlightLettersForWord(currentHintWord);
+        hintsUsed++;
+        Debug.Log($"Hint used. New hintsUsed value: {hintsUsed}");
+        UpdateUI();
+    }
+    else
+    {
+        Debug.Log("No valid hint word found.");
+    }
+}
+
 
     string FindHintWord()
     {

@@ -24,6 +24,7 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         Revealed = false;
         _clicked = false;
         _cardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
@@ -31,6 +32,9 @@ public class Card : MonoBehaviour
 
         _audio = GetComponent<AudioSource>();
         _audio.clip = PressSound;
+
+        Debug.Log($"Card {gameObject.name} materials: {_firstMaterial.name}, {_secondMaterial.name}");
+        
     }
 
     // Update is called once per frame
@@ -52,17 +56,22 @@ public class Card : MonoBehaviour
         
     }
 
-    public void FlipBack()
+public void FlipBack()
+{
+    if (gameObject.activeSelf)
     {
-        if(gameObject.activeSelf)
-        {
-            _cardManager.CurrentPuzzleState = CardManager.PuzzleState.PuzzleRotateting;
-            Revealed = false;
-            if(GameSettings.Instance.IsSoundEffectMutedPermanently() == false)
-                _audio.Play();
-            StartCoroutine(LoopRotation(45, true));
-        }
+        _cardManager.CurrentPuzzleState = CardManager.PuzzleState.PuzzleRotateting;
+        Revealed = false;
+        if (!GameSettings.Instance.IsSoundEffectMutedPermanently())
+            _audio.Play();
+
+        // Reset material to the first material
+        ApplyFirstMaterial();
+
+        StartCoroutine(LoopRotation(45, true));
     }
+}
+
 
     IEnumerator LoopRotation(float angle, bool FirstMat)
     {
@@ -118,32 +127,32 @@ public class Card : MonoBehaviour
     }
 
     public void SetFirstMaterial(Material mat, string texturePath)
+{
+    _firstMaterial = new Material(mat);
+    Texture2D texture = Resources.Load(texturePath, typeof(Texture2D)) as Texture2D;
+    if (texture != null)
     {
-        _firstMaterial = mat;
-        Texture2D texture = Resources.Load(texturePath, typeof(Texture2D)) as Texture2D;
-        if (texture != null)
-        {
-            _firstMaterial.mainTexture = texture;
-        }
-        else
-        {
-            Debug.LogError("Failed to load texture: " + texturePath);
-        }
+        _firstMaterial.mainTexture = texture;
     }
+    else
+    {
+        Debug.LogError("Failed to load texture: " + texturePath);
+    }
+}
 
-    public void SetSecondMaterial(Material mat, string texturePath)
+public void SetSecondMaterial(Material mat, string texturePath)
+{
+    _secondMaterial = new Material(mat);
+    Texture2D texture = Resources.Load(texturePath, typeof(Texture2D)) as Texture2D;
+    if (texture != null)
     {
-        _secondMaterial = mat;
-        Texture2D texture = Resources.Load(texturePath, typeof(Texture2D)) as Texture2D;
-        if (texture != null)
-        {
-            _secondMaterial.mainTexture = texture;
-        }
-        else
-        {
-            Debug.LogError("Failed to load texture: " + texturePath);
-        }
+        _secondMaterial.mainTexture = texture;
     }
+    else
+    {
+        Debug.LogError("Failed to load texture: " + texturePath);
+    }
+}
 
     public void ApplyFirstMaterial()
     {

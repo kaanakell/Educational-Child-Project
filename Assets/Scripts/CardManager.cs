@@ -218,25 +218,43 @@ public class CardManager : MonoBehaviour
         _corutineStarted = false;
     }
 
-    private void LoadMaterials()
-    {
-        var textureDirectoryPath = GameSettings.Instance.GetTextureDirectoryName();
-        var materialFilePath = GameSettings.Instance.GetMaterialDirectoryName();
-        var pairNumber = (int)GameSettings.Instance.GetPairNumber();
-        var firstMaterialName = "Back";
+ private void LoadMaterials()
+{
+    var textureDirectoryPath = GameSettings.Instance.GetTextureDirectoryName();
+    var materialDirectoryPath = GameSettings.Instance.GetMaterialDirectoryName();
+    var pairNumber = (int)GameSettings.Instance.GetPairNumber();
+    var firstMaterialName = "Back";
 
-        for (var index = 1; index <= pairNumber; index++)
+    // Load the first material for the back of the cards
+    _firstMaterial = Resources.Load<Material>(materialDirectoryPath + firstMaterialName);
+
+    // Load each material for the cards
+    for (int index = 1; index <= pairNumber; index++)
+    {
+        var currentMaterialFilePath = materialDirectoryPath + "Card" + index;
+        var currentTextureFilePath = textureDirectoryPath + "Card" + index;
+        
+        // Load material and texture
+        Material material = Resources.Load<Material>(currentMaterialFilePath);
+        Texture2D texture = Resources.Load<Texture2D>(currentTextureFilePath);
+
+        if (material != null && texture != null)
         {
-            var currentMaterialFilePath = materialFilePath + "Card" + index;
-            var currentTextureFilePath = textureDirectoryPath + "Card" + index;
-            Material material = Resources.Load<Material>(currentMaterialFilePath);
-            _materialList.Add(material);
+            // Clone the material to ensure each card gets its own instance
+            Material clonedMaterial = new Material(material);
+            clonedMaterial.mainTexture = texture;
+
+            // Add the cloned material to the list
+            _materialList.Add(clonedMaterial);
             _texturePathList.Add(currentTextureFilePath);
         }
-
-        _firstTexturePath = textureDirectoryPath + firstMaterialName;
-        _firstMaterial = Resources.Load(materialFilePath + firstMaterialName, typeof(Material)) as Material;
+        else
+        {
+            Debug.LogError($"Failed to load material or texture: {currentMaterialFilePath}, {currentTextureFilePath}");
+        }
     }
+}
+
 
     
 

@@ -623,7 +623,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &682248255
 RectTransform:
   m_ObjectHideFlags: 0
@@ -782,7 +782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3760374610214536538, guid: 13abdeb99ec620a4bb99346a334e00fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnAnswerSelected
+      value: CheckAnswer
       objectReference: {fileID: 0}
     - target: {fileID: 3760374610214536538, guid: 13abdeb99ec620a4bb99346a334e00fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -1215,7 +1215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3760374610214536538, guid: 13abdeb99ec620a4bb99346a334e00fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnAnswerSelected
+      value: CheckAnswer
       objectReference: {fileID: 0}
     - target: {fileID: 3760374610214536538, guid: 13abdeb99ec620a4bb99346a334e00fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -1441,7 +1441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3760374610214536538, guid: 13abdeb99ec620a4bb99346a334e00fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnAnswerSelected
+      value: CheckAnswer
       objectReference: {fileID: 0}
     - target: {fileID: 3760374610214536538, guid: 13abdeb99ec620a4bb99346a334e00fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -1674,15 +1674,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questionText: {fileID: 1173024633}
-  patternImages: []
+  patternImages:
+  - {fileID: 1158889968}
+  - {fileID: 1980338151}
+  - {fileID: 693653112}
+  - {fileID: 1765097565}
+  - {fileID: 329515439}
+  - {fileID: 307870462}
+  - {fileID: 35149501}
   answerButtons:
   - {fileID: 1362800061}
   - {fileID: 1083804907}
   - {fileID: 1709253178}
   - {fileID: 907521498}
-  question: {fileID: 11400000, guid: 01cdd9189ce845e418f673bfc80ef1dd, type: 2}
-  defaultAnswerSprite: {fileID: 0}
-  correctAnswerSprite: {fileID: 0}
+  currentQuestion: {fileID: 0}
+  questions:
+  - {fileID: 11400000, guid: 01cdd9189ce845e418f673bfc80ef1dd, type: 2}
+  - {fileID: 11400000, guid: c251d1484b89d194faa5a86bd24b3ca8, type: 2}
+  - {fileID: 11400000, guid: 90e786756bb95df4d8c2a7123f479534, type: 2}
+  - {fileID: 11400000, guid: c9b2528b38684f44c89e6e11ff73a11b, type: 2}
 --- !u!1 &1980338151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1918,7 +1928,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3760374610214536538, guid: 13abdeb99ec620a4bb99346a334e00fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnAnswerSelected
+      value: CheckAnswer
       objectReference: {fileID: 0}
     - target: {fileID: 3760374610214536538, guid: 13abdeb99ec620a4bb99346a334e00fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

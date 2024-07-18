@@ -12,15 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a22a2dc3077e045a2618f5b8a1287d, type: 3}
   m_Name: Question 1
   m_EditorClassIdentifier: 
-  question: Hello World
-  questionImages: []
+  question: 
+  questionImages:
+  - {fileID: -300326917504082158, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - {fileID: 3258061597306004157, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - {fileID: -300326917504082158, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - {fileID: 3258061597306004157, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - {fileID: -300326917504082158, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - {fileID: 3258061597306004157, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - {fileID: -300326917504082158, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
   answers:
-  - answerText: Skibidi
-    answerImage: {fileID: 0}
-  - answerText: Rizz
-    answerImage: {fileID: 0}
-  - answerText: Gywattt
-    answerImage: {fileID: 0}
-  - answerText: Sigma
-    answerImage: {fileID: 0}
-  correctAnswerIndex: 0
+  - answerText: 
+    answerImage: {fileID: -300326917504082158, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - answerText: 
+    answerImage: {fileID: 3258061597306004157, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - answerText: 
+    answerImage: {fileID: 7402715874748248571, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  - answerText: 
+    answerImage: {fileID: -7344694598970695816, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
+  correctAnswerIndex: 1

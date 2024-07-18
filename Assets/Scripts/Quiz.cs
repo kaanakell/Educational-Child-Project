@@ -12,13 +12,10 @@ public class Quiz : MonoBehaviour
     [SerializeField] List<QuestionSO> questions = new List<QuestionSO>();
 
     private QuestionSO currentQuestion;
-    private List<QuestionSO> availableQuestions;
 
     void Start()
     {
-        // Create a copy of the original questions list to track available questions
-        availableQuestions = new List<QuestionSO>(questions);
-        GetNextQuestion();
+        SetupQuestion();
     }
 
     public void SetupQuestion()
@@ -85,23 +82,20 @@ public class Quiz : MonoBehaviour
 
     void GetNextQuestion()
     {
-        SetButtonState(false); // Lock buttons while setting up the next question
-        if (availableQuestions.Count == 0)
+        if (questions.Count == 0)
         {
+            GetRandomQuestion();
             Debug.Log("No more questions available.");
-            RestartQuiz();
             return; // No more questions to display
         }
-
-        GetRandomQuestion();
-        SetupQuestion();
+        //SetupQuestion();
     }
 
     void GetRandomQuestion()
     {
-        int index = Random.Range(0, availableQuestions.Count);
-        currentQuestion = availableQuestions[index];
-        availableQuestions.RemoveAt(index); // Remove the question from the available list to avoid repeats
+        int index = Random.Range(0, questions.Count);
+        currentQuestion = questions[index];
+        questions.RemoveAt(index); // Remove the question from the list to avoid repeats
     }
 
     public void CheckAnswer(int index)
@@ -118,25 +112,15 @@ public class Quiz : MonoBehaviour
         // Lock buttons
         SetButtonState(false);
 
+        // If the answer is correct, proceed to the next question
         if (isCorrect)
         {
-            // If the answer is correct, proceed to the next question
             Invoke("GetNextQuestion", 1f); // Delay before loading next question
         }
         else
         {
             // If the answer is wrong, ask the same question again
-            Invoke("AskSameQuestionAgain", 1f); // Delay before re-asking the same question
-        }
-    }
-
-    void AskSameQuestionAgain()
-    {
-        SetButtonState(true); // Re-enable the buttons for the same question
-        for (int i = 0; i < answerButtons.Length; i++)
-        {
-            // Reset button color to default when re-enabling
-            answerButtons[i].GetComponent<Image>().color = Color.white;
+            Invoke("SetupQuestion", 1f); // Delay before re-asking the same question
         }
     }
 
@@ -153,12 +137,5 @@ public class Quiz : MonoBehaviour
                 answerButtons[i].GetComponent<Image>().color = Color.white;
             }
         }
-    }
-
-    void RestartQuiz()
-    {
-        // Reset the available questions list
-        availableQuestions = new List<QuestionSO>(questions);
-        GetNextQuestion();
     }
 }

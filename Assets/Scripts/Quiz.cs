@@ -11,15 +11,28 @@ public class Quiz : MonoBehaviour
     [SerializeField] GameObject[] answerButtons;
     [SerializeField] List<QuestionSO> questions = new List<QuestionSO>();
 
+    [Header("ProgressBar")]
+    [SerializeField] Slider progressBar;
+
+    public bool isComplete;
+
     private QuestionSO currentQuestion;
+    private List<QuestionSO> availableQuestions;
+    private bool buttonClicked = false;
 
     void Start()
     {
-        SetupQuestion();
+        // Create a copy of the original questions list to track available questions
+        availableQuestions = new List<QuestionSO>(questions);
+        GetNextQuestion();
+        progressBar.maxValue = questions.Count;
+        progressBar.value = 0;
     }
 
     public void SetupQuestion()
     {
+        buttonClicked = false; // Reset button click state
+
         // Set the question text
         questionText.text = currentQuestion.Question;
 
@@ -66,11 +79,9 @@ public class Quiz : MonoBehaviour
                 }
 
                 // Clear previous click listeners to prevent multiple calls
-                answerButtons[i].GetComponent<Button>().onClick.RemoveAllListeners();
-
-                // Add click listener
-                int answerIndex = i; // Capture the current index for the closure
-                answerButtons[i].GetComponent<Button>().onClick.AddListener(() => CheckAnswer(answerIndex));
+                Button button = answerButtons[i].GetComponent<Button>();
+                button.onClick.RemoveAllListeners();
+                button.onClick.AddListener(() => OnAnswerButtonClick(i));
             }
             else
             {
@@ -80,26 +91,46 @@ public class Quiz : MonoBehaviour
         SetButtonState(true);
     }
 
+    private void OnAnswerButtonClick(int index)
+    {
+        if (!buttonClicked)
+        {
+            buttonClicked = true; // Ensure this block is only executed once per click
+            CheckAnswer(index);
+        }
+    }
+
     void GetNextQuestion()
     {
-        if (questions.Count == 0)
+        SetButtonState(false); // Lock buttons while setting up the next question
+        if (availableQuestions.Count == 0)
         {
-            GetRandomQuestion();
             Debug.Log("No more questions available.");
+            if (progressBar.value == progressBar.maxValue)
+            {
+                isComplete = true;
+            }
             return; // No more questions to display
         }
-        //SetupQuestion();
+
+        GetRandomQuestion();
+        SetupQuestion();
     }
 
     void GetRandomQuestion()
     {
-        int index = Random.Range(0, questions.Count);
-        currentQuestion = questions[index];
-        questions.RemoveAt(index); // Remove the question from the list to avoid repeats
+        int index = Random.Range(0, availableQuestions.Count);
+        currentQuestion = availableQuestions[index];
     }
 
     public void CheckAnswer(int index)
     {
+        
+        if (index >= currentQuestion.Answers.Count)
+        {
+            return;
+        }
+
         bool isCorrect = index == currentQuestion.CorrectAnswerIndex;
 
         // Log the result
@@ -112,15 +143,33 @@ public class Quiz : MonoBehaviour
         // Lock buttons
         SetButtonState(false);
 
-        // If the answer is correct, proceed to the next question
         if (isCorrect)
         {
+            // Remove the correctly answered question from the availableQuestions and questions lists
+            availableQuestions.Remove(currentQuestion);
+            questions.Remove(currentQuestion);
+
+            // Increment the progress bar
+            progressBar.value++;
+
+            // Proceed to the next question
             Invoke("GetNextQuestion", 1f); // Delay before loading next question
         }
         else
         {
             // If the answer is wrong, ask the same question again
-            Invoke("SetupQuestion", 1f); // Delay before re-asking the same question
+            Invoke("AskSameQuestionAgain", 1f); // Delay before re-asking the same question
+        }
+    }
+
+    void AskSameQuestionAgain()
+    {
+        buttonClicked = false; // Reset button click state
+        SetButtonState(true); // Re-enable the buttons for the same question
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            // Reset button color to default when re-enabling
+            answerButtons[i].GetComponent<Image>().color = Color.white;
         }
     }
 

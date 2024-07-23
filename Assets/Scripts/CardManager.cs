@@ -22,23 +22,25 @@ public class CardManager : MonoBehaviour
     public GameObject TimerObject;
     public Text bestTime;
 
-    public enum GameState 
+    public CardMaterialData cardMaterialData; // Reference to ScriptableObject
+
+    public enum GameState
     {
-        NoAction, 
-        MovingOnPosition, 
-        DeletingPuzzles, 
-        FlipBack, 
-        Checking, 
+        NoAction,
+        MovingOnPosition,
+        DeletingPuzzles,
+        FlipBack,
+        Checking,
         GameEnd
     };
 
-    public enum PuzzleState 
+    public enum PuzzleState
     {
-        PuzzleRotateting, 
+        PuzzleRotateting,
         CanRotate
     };
 
-    public enum RevealedState 
+    public enum RevealedState
     {
         NoRevealed,
         OneRevealed,
@@ -72,13 +74,13 @@ public class CardManager : MonoBehaviour
     private int _revealedCardNumber = 0;
     private int _cardToDestroy1;
     private int _cardToDestroy2;
-    
+
     private bool _corutineStarted = false;
 
     private int _pairNumbers;
     private int _removedPairs;
     private Timer _gameTimer;
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -91,9 +93,18 @@ public class CardManager : MonoBehaviour
         _secondRevealedCard = -1;
 
         _removedPairs = 0;
-        _pairNumbers = (int) GameSettings.Instance.GetPairNumber();
+        _pairNumbers = (int)GameSettings.Instance.GetPairNumber();
 
         _gameTimer = GameObject.Find("TimerObject").GetComponent<Timer>();
+
+        if (cardMaterialData != null)
+        {
+            _firstMaterial = cardMaterialData.cardBackMaterial;
+        }
+        else
+        {
+            Debug.LogError("CardMaterialData is not assigned.");
+        }
 
         LoadMaterials();
         int pairNumber = (int)GameSettings.Instance.GetPairNumber();
@@ -149,16 +160,16 @@ public class CardManager : MonoBehaviour
         CurrentGameState = GameState.Checking;
         _revealedCardNumber = 0;
 
-        for(int id = 0; id < CardList.Count; id++)
+        for (int id = 0; id < CardList.Count; id++)
         {
-            if(CardList[id].Revealed && _revealedCardNumber < 2)
+            if (CardList[id].Revealed && _revealedCardNumber < 2)
             {
-                if(_revealedCardNumber == 0)
+                if (_revealedCardNumber == 0)
                 {
                     _firstRevealedCard = id;
                     _revealedCardNumber++;
                 }
-                else if(_revealedCardNumber == 1)
+                else if (_revealedCardNumber == 1)
                 {
                     _secondRevealedCard = id;
                     _revealedCardNumber++;
@@ -166,24 +177,24 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        if(_revealedCardNumber == 2)
+        if (_revealedCardNumber == 2)
         {
-            if(CardList[_firstRevealedCard].GetIndex() == CardList[_secondRevealedCard].GetIndex() && _firstRevealedCard != _secondRevealedCard)
+            if (CardList[_firstRevealedCard].GetIndex() == CardList[_secondRevealedCard].GetIndex() && _firstRevealedCard != _secondRevealedCard)
             {
                 CurrentGameState = GameState.DeletingPuzzles;
                 _cardToDestroy1 = _firstRevealedCard;
                 _cardToDestroy2 = _secondRevealedCard;
             }
-            else 
+            else
             {
                 CurrentGameState = GameState.FlipBack;
             }
-            
+
         }
 
         CurrentPuzzleState = CardManager.PuzzleState.CanRotate;
 
-        if(CurrentGameState == GameState.Checking)
+        if (CurrentGameState == GameState.Checking)
         {
             CurrentGameState = GameState.NoAction;
         }
@@ -218,80 +229,84 @@ public class CardManager : MonoBehaviour
         _corutineStarted = false;
     }
 
- private void LoadMaterials()
-{
-    var textureDirectoryPath = GameSettings.Instance.GetTextureDirectoryName();
-    var materialDirectoryPath = GameSettings.Instance.GetMaterialDirectoryName();
-    var pairNumber = (int)GameSettings.Instance.GetPairNumber();
-    var firstMaterialName = "Back";
-
-    // Load the first material for the back of the cards
-    _firstMaterial = Resources.Load<Material>(materialDirectoryPath + firstMaterialName);
-
-    // Load each material for the cards
-    for (int index = 1; index <= pairNumber; index++)
+    private void LoadMaterials()
     {
-        var currentMaterialFilePath = materialDirectoryPath + "Card" + index;
-        var currentTextureFilePath = textureDirectoryPath + "Card" + index;
-        
-        // Load material and texture
-        Material material = Resources.Load<Material>(currentMaterialFilePath);
-        Texture2D texture = Resources.Load<Texture2D>(currentTextureFilePath);
+        var textureDirectoryPath = GameSettings.Instance.GetTextureDirectoryName();
+        var materialDirectoryPath = GameSettings.Instance.GetMaterialDirectoryName();
+        var pairNumber = (int)GameSettings.Instance.GetPairNumber();
+        const string matBaseName = "Card";
+        var firstMaterialName = "Back";
 
-        if (material != null && texture != null)
-        {
-            // Clone the material to ensure each card gets its own instance
-            Material clonedMaterial = new Material(material);
-            clonedMaterial.mainTexture = texture;
+        // Load the first material for the back of the cards
+        _firstTexturePath = textureDirectoryPath + firstMaterialName;
+        _firstMaterial = Resources.Load<Material>(materialDirectoryPath + firstMaterialName);
 
-            // Add the cloned material to the list
-            _materialList.Add(clonedMaterial);
-            _texturePathList.Add(currentTextureFilePath);
-        }
-        else
+        // Load each material for the cards
+        for (int index = 1; index <= pairNumber; index++)
         {
-            Debug.LogError($"Failed to load material or texture: {currentMaterialFilePath}, {currentTextureFilePath}");
+            var currentMaterialFilePath = materialDirectoryPath + matBaseName + index;
+            var currentTextureFilePath = textureDirectoryPath + matBaseName + index;
+
+            // Load material and texture
+            Material material = Resources.Load<Material>(currentMaterialFilePath);
+            Texture2D texture = Resources.Load<Texture2D>(currentTextureFilePath);
+
+            if (material != null && texture != null)
+            {
+                // Clone the material to ensure each card gets its own instance
+                Material clonedMaterial = new Material(material)
+                {
+                    mainTexture = texture
+                };
+
+                // Add the cloned material to the list
+                _materialList.Add(clonedMaterial);
+                _texturePathList.Add(currentTextureFilePath);
+            }
+            else
+            {
+                Debug.LogError($"Failed to load material or texture: {currentMaterialFilePath}, {currentTextureFilePath}");
+            }
         }
     }
-}
 
 
-    
+
 
     // Update is called once per frame
     void Update()
     {
-        if(CurrentGameState == GameState.DeletingPuzzles)
+        if (CurrentGameState == GameState.DeletingPuzzles)
         {
-            if(CurrentPuzzleState == PuzzleState.CanRotate)
+            if (CurrentPuzzleState == PuzzleState.CanRotate)
             {
                 DestroyCard();
                 CheckGameEnd();
             }
         }
 
-        if(CurrentGameState == GameState.FlipBack)
+        if (CurrentGameState == GameState.FlipBack)
         {
-            if(CurrentPuzzleState == PuzzleState.CanRotate && _corutineStarted == false)
+            if (CurrentPuzzleState == PuzzleState.CanRotate && _corutineStarted == false)
             {
                 StartCoroutine(FlipBack());
             }
         }
 
-        if(CurrentGameState == GameState.GameEnd)
+        if (CurrentGameState == GameState.GameEnd)
         {
-            if(CardList[_firstRevealedCard].gameObject.activeSelf == false && 
-                CardList[_secondRevealedCard].gameObject.activeSelf == false&&
+            if (CardList[_firstRevealedCard].gameObject.activeSelf == false &&
+                CardList[_secondRevealedCard].gameObject.activeSelf == false &&
                 EndGamePanel.activeSelf == false)
-                {
-                    ShowEndGameInformation();
-                }
+            {
+                ShowEndGameInformation();
+            }
         }
     }
 
     private bool CheckGameEnd()
     {
-        if(_removedPairs == _pairNumbers && CurrentGameState != GameState.GameEnd)
+        if (_removedPairs == _pairNumbers && CurrentGameState != GameState.GameEnd)
         {
             CurrentGameState = GameState.GameEnd;
             _gameTimer.PauseTimer(); // Stop the timer
@@ -313,7 +328,7 @@ public class CardManager : MonoBehaviour
         Debug.Log("EndTimeText: " + EndTimeText);
         EndTimeText.GetComponent<TextMeshProUGUI>().text = newText;
 
-        if(timer < PlayerPrefs.GetFloat("Best Time", 00))
+        if (timer < PlayerPrefs.GetFloat("Best Time", 00))
         {
             PlayerPrefs.SetFloat("Best Time", timer);
             var bestMinutes = Mathf.Floor(PlayerPrefs.GetFloat("Best Time", 0) / 60);
@@ -323,20 +338,20 @@ public class CardManager : MonoBehaviour
         }
     }
 
-     private void SpawnCardMesh(int rows, int columns, Vector2 Pos, Vector2 offset, bool scaleDown)
+    private void SpawnCardMesh(int rows, int columns, Vector2 Pos, Vector2 offset, bool scaleDown)
     {
-        for(int col = 0; col < columns; col++)
+        for (int col = 0; col < columns; col++)
         {
-            for(int row = 0; row < rows; row++)
+            for (int row = 0; row < rows; row++)
             {
                 var tempCard = (Card)Instantiate(CardPrefab, CardSpawnPosition.position, CardPrefab.transform.rotation);
 
-                if(scaleDown)
+                if (scaleDown)
                 {
                     tempCard.transform.localScale = _newScaleDown;
                 }
 
-                tempCard.name = tempCard.name+'c'+col+'r'+row;
+                tempCard.name = tempCard.name + 'c' + col + 'r' + row;
                 CardList.Add(tempCard);
             }
         }
@@ -348,33 +363,33 @@ public class CardManager : MonoBehaviour
         var randomMatIndex = Random.Range(0, _materialList.Count);
         var AppliedTimes = new int[_materialList.Count];
 
-        for(int i = 0; i < _materialList.Count; i++)
+        for (int i = 0; i < _materialList.Count; i++)
         {
             AppliedTimes[i] = 0;
         }
 
-        foreach(var o in CardList)
+        foreach (var o in CardList)
         {
             var randPrevious = randomMatIndex;
             var counter = 0;
             var forceMat = false;
 
-            while(AppliedTimes[randomMatIndex] >= 2 || ((randPrevious == randomMatIndex) && !forceMat))
+            while (AppliedTimes[randomMatIndex] >= 2 || ((randPrevious == randomMatIndex) && !forceMat))
             {
                 randomMatIndex = Random.Range(0, _materialList.Count);
                 counter++;
-                if(counter > 100)
+                if (counter > 100)
                 {
-                    for(var j = 0; j < _materialList.Count; j++)
+                    for (var j = 0; j < _materialList.Count; j++)
                     {
-                        if(AppliedTimes[j] < 2)
+                        if (AppliedTimes[j] < 2)
                         {
                             randomMatIndex = j;
                             forceMat = true;
                         }
                     }
 
-                    if(forceMat == false)
+                    if (forceMat == false)
                         return;
                 }
             }
@@ -413,4 +428,3 @@ public class CardManager : MonoBehaviour
         }
     }
 }
-

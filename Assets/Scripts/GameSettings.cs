@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -61,7 +60,7 @@ public class GameSettings : MonoBehaviour
         _muteFxPermanently = muted;
     }
 
-    public bool IsSoundEffectMutedPermanently() 
+    public bool IsSoundEffectMutedPermanently()
     {
         return _muteFxPermanently;
     }

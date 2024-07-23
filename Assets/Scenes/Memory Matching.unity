@@ -1320,6 +1320,7 @@ MonoBehaviour:
   EndTimeText: {fileID: 404115535028551185}
   TimerObject: {fileID: 1882304486}
   bestTime: {fileID: 8877600867407999977}
+  cardMaterialData: {fileID: 11400000, guid: 8e1bb12024768b2449865ea40ac67e39, type: 2}
   CurrentGameState: 0
   CurrentPuzzleState: 0
   PuzzleRevealedNumber: 0
@@ -1947,9 +1948,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1162039283293700634, guid: 7d3a2ff315cdb5348884a9c945af8f52, type: 3}
+      propertyPath: pauseButton
+      value: 
+      objectReference: {fileID: 2320064295337685546}
+    - target: {fileID: 1162039283293700634, guid: 7d3a2ff315cdb5348884a9c945af8f52, type: 3}
       propertyPath: pauseMenuUI
       value: 
       objectReference: {fileID: 788008760715517532}
+    - target: {fileID: 1162039283293700634, guid: 7d3a2ff315cdb5348884a9c945af8f52, type: 3}
+      propertyPath: resumeButton
+      value: 
+      objectReference: {fileID: 3152154298904408951}
     - target: {fileID: 4561877389289608373, guid: 7d3a2ff315cdb5348884a9c945af8f52, type: 3}
       propertyPath: m_Name
       value: Button Manager

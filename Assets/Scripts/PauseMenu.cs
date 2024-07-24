@@ -4,15 +4,15 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI;
-    public Button pauseButton;
-    public Button resumeButton;  // Add this line
+    private Button pauseButton;
+    private Button resumeButton;  // Add this line
 
     private bool isPaused = false;
 
     void Start()
     {
-        pauseButton.onClick.AddListener(TogglePause);
-        resumeButton.onClick.AddListener(Resume);  // Add this line
+        //pauseButton.onClick.AddListener(TogglePause);
+        //resumeButton.onClick.AddListener(Resume);  // Add this line
     }
 
     public void TogglePause()

@@ -7,6 +7,7 @@ public class ButtonBehaviour : MonoBehaviour
 {
     public void LoadScene(string scene_name)
     {
+        GameSettings.Instance.AdjustSettingsForLevel(scene_name);
         SceneManager.LoadScene(scene_name);
     }
 
@@ -17,3 +18,4 @@ public class ButtonBehaviour : MonoBehaviour
         print("The button is working");
     }
 }
+

@@ -4,16 +4,24 @@ public class AnimalInteraction : MonoBehaviour
 {
     private Vector3 initialPosition;
     private bool isDragging = false;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void OnMouseDown()
     {
         isDragging = true;
         initialPosition = transform.position;
+        PlaySound();
     }
 
     void OnMouseUp()
     {
         isDragging = false;
+        StopSound();
     }
 
     void Update()
@@ -32,6 +40,20 @@ public class AnimalInteraction : MonoBehaviour
         mousePosition.z = Camera.main.nearClipPlane;
         return Camera.main.ScreenToWorldPoint(mousePosition);
     }
+
+    private void PlaySound()
+    {
+        if (audioSource != null && !audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+    }
+
+    private void StopSound()
+    {
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
+    }
 }
-
-

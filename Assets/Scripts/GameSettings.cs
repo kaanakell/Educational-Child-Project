@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameSettings : MonoBehaviour
@@ -21,23 +19,18 @@ public class GameSettings : MonoBehaviour
     {
         if (Instance == null)
         {
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this.gameObject);
             Instance = this;
         }
         else
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 
-    void Start()
+    public void SetPairNumber(EPairNumber number)
     {
-        // You may initialize other settings here
-    }
-
-    public void SetPairNumber(EPairNumber Number)
-    {
-        _currentPairNumber = Number;
+        _currentPairNumber = number;
     }
 
     public EPairNumber GetPairNumber()
@@ -60,9 +53,27 @@ public class GameSettings : MonoBehaviour
         _muteFxPermanently = muted;
     }
 
-    public bool IsSoundEffectMutedPermanently()
+    public bool IsSoundEffectMutedPermanently() 
     {
         return _muteFxPermanently;
     }
 
+    public void AdjustSettingsForLevel(string levelName)
+    {
+        switch (levelName)
+        {
+            case "Memory Matching Lvl1":
+                SetPairNumber(EPairNumber.E10Pairs);
+                break;
+            case "Memory Matching Lvl2":
+                SetPairNumber(EPairNumber.E15Pairs);
+                break;
+            case "Memory Matching Lvl3":
+                SetPairNumber(EPairNumber.E20Pairs);
+                break;
+            default:
+                SetPairNumber(EPairNumber.NotSet);
+                break;
+        }
+    }
 }

@@ -10,47 +10,89 @@ public class MuteSoundEffectButton : MonoBehaviour
 
     private Button _button;
     private SpriteState _state;
+
     // Start is called before the first frame update
     void Start()
     {
         _button = GetComponent<Button>();
-        if(GameSettings.Instance.IsSoundEffectMutedPermanently())
+        if (_button == null)
+        {
+            Debug.LogError("Button component not found!");
+            return;
+        }
+
+        _state = new SpriteState();
+
+        if (UnMutedFxSprite == null || MutedFxSprite == null)
+        {
+            Debug.LogError("Sprites not assigned!");
+            return;
+        }
+
+        if (GameSettings.Instance == null)
+        {
+            Debug.LogError("GameSettings.Instance is null!");
+            return;
+        }
+
+        UpdateButtonSprite();
+    }
+
+    void Update()
+    {
+        UpdateButtonSprite();
+    }
+
+    private void UpdateButtonSprite()
+    {
+        if (GameSettings.Instance.IsSoundEffectMutedPermanently())
         {
             _state.pressedSprite = MutedFxSprite;
             _state.highlightedSprite = MutedFxSprite;
             _button.GetComponent<Image>().sprite = MutedFxSprite;
+            MuteAllAudio(true);
         }
         else
         {
             _state.pressedSprite = UnMutedFxSprite;
             _state.highlightedSprite = UnMutedFxSprite;
             _button.GetComponent<Image>().sprite = UnMutedFxSprite;
+            MuteAllAudio(false);
         }
-    }
 
-    void OnGUI()
-    {
-        if(GameSettings.Instance.IsSoundEffectMutedPermanently())
-            _button.GetComponent<Image>().sprite = MutedFxSprite;
-        else
-            _button.GetComponent<Image>().sprite = UnMutedFxSprite;
+        _button.spriteState = _state;
     }
 
     public void ToggleFxIcon()
     {
-        if(GameSettings.Instance.IsSoundEffectMutedPermanently())
+        if (GameSettings.Instance.IsSoundEffectMutedPermanently())
         {
-            _state.pressedSprite = UnMutedFxSprite;
-            _state.highlightedSprite = UnMutedFxSprite;
             GameSettings.Instance.MuteSoundEffectPermanently(false);
         }
         else
         {
-            _state.pressedSprite = MutedFxSprite;
-            _state.highlightedSprite = MutedFxSprite;
             GameSettings.Instance.MuteSoundEffectPermanently(true);
         }
 
-        _button.spriteState = _state;
+        UpdateButtonSprite();
+    }
+
+    private void MuteAllAudio(bool mute)
+    {
+        // Mute or unmute background music
+        if (MusicManager.Instance != null && MusicManager.Instance.GetComponent<AudioSource>() != null)
+        {
+            MusicManager.Instance.GetComponent<AudioSource>().mute = mute;
+        }
+
+        // Mute or unmute all audio sources in the scene (excluding MusicManager if you want to handle it separately)
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+        foreach (AudioSource audioSource in audioSources)
+        {
+            if (audioSource != MusicManager.Instance.GetComponent<AudioSource>())
+            {
+                audioSource.mute = mute;
+            }
+        }
     }
 }

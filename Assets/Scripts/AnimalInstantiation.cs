@@ -21,8 +21,8 @@ public class AnimalInstantiation : MonoBehaviour
 
     void Update()
     {
-        // Check if all animals in the current group have been destroyed
-        if (AllAnimalsDestroyed())
+        // Check if all animals in the current group have been matched
+        if (AllAnimalsMatched())
         {
             // Instantiate the next group of animals
             InstantiateNextGroup();
@@ -40,7 +40,11 @@ public class AnimalInstantiation : MonoBehaviour
         {
             int prefabIndex = currentGroupIndex * 3 + i;
             if (prefabIndex >= animalPrefabs.Length)
-                break; // No more animals to instantiate
+            {
+                // No more animals to instantiate, check if all animals are matched
+                GameManager.Instance.CheckEndCondition();
+                return;
+            }
 
             Vector3 randomPosition = startPosition + new Vector3(i * spaceBetweenAnimals, 0f, 0f);
             GameObject animalPrefab = animalPrefabs[prefabIndex];
@@ -51,15 +55,15 @@ public class AnimalInstantiation : MonoBehaviour
         currentGroupIndex++;
     }
 
-    // Function to check if all animals in the current group have been destroyed
-    private bool AllAnimalsDestroyed()
+    // Function to check if all animals in the current group have been matched
+    private bool AllAnimalsMatched()
     {
         foreach (GameObject animal in instantiatedAnimals)
         {
-            if (animal != null)
-                return false; // At least one animal is still alive
+            if (animal != null && !animal.GetComponent<AnimalInteraction>().IsMatched)
+                return false; // At least one animal is still not matched
         }
-        return true; // All animals have been destroyed
+        return true; // All animals have been matched
     }
 
     // Function to shuffle an array
@@ -74,6 +78,3 @@ public class AnimalInstantiation : MonoBehaviour
         }
     }
 }
-
-
-

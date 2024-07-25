@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Game Menu.unity
     guid: d8e9447745e5322429a33e21523efce7
   - enabled: 1
-    path: Assets/Scenes/Memory Matching.unity
+    path: Assets/Scenes/Memory Matching Lvl1.unity
     guid: 2953b2b4e1b2da545bc2c91516aff19e
   - enabled: 1
     path: Assets/Scenes/Memory Matching Lvl2.unity
@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Word Game.unity
     guid: 7296aa2a17f35ee409eac5b091eeded6
+  - enabled: 1
+    path: Assets/Scenes/Pattern Quiz.unity
+    guid: 52f5b964f97a3744e83bfca3188935f2
   m_configObjects: {}

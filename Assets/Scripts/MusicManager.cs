@@ -1,9 +1,24 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MusicManager : MonoBehaviour
 {
+    [SerializeField] Slider volumeSlider;
     public static MusicManager Instance;
     private AudioSource audioSource;
+
+    void Start()
+    {
+        if(!PlayerPrefs.HasKey("musicVolume"))
+        {
+            PlayerPrefs.SetFloat("musicVolume", 1);
+            Load();
+        }
+        else
+        {
+            Load();
+        }
+    }
 
     void Awake()
     {
@@ -11,7 +26,7 @@ public class MusicManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -38,5 +53,21 @@ public class MusicManager : MonoBehaviour
     public void SetVolume(float volume)
     {
         audioSource.volume = volume;
+    }
+
+    public void ChangeVolume()
+    {
+        AudioListener.volume = volumeSlider.value;
+        Save();
+    }
+
+    private void Load()
+    {
+        volumeSlider.value = PlayerPrefs.GetFloat("musicVolume");
+    }
+
+    private void Save()
+    {
+        PlayerPrefs.SetFloat("musicVolume", volumeSlider.value);
     }
 }

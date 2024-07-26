@@ -10,11 +10,10 @@ public class Quiz : MonoBehaviour
     [SerializeField] GameObject[] patternImages; // For multiple image questions
     [SerializeField] GameObject[] answerButtons;
     [SerializeField] List<QuestionSO> questions = new List<QuestionSO>();
+    [SerializeField] GameObject endGamePanel; // Reference to the end game panel
 
     [Header("ProgressBar")]
     [SerializeField] Slider progressBar;
-
-    public bool isComplete;
 
     private QuestionSO currentQuestion;
     private List<QuestionSO> availableQuestions;
@@ -27,6 +26,7 @@ public class Quiz : MonoBehaviour
         GetNextQuestion();
         progressBar.maxValue = questions.Count;
         progressBar.value = 0;
+        endGamePanel.SetActive(false); // Hide the end game panel initially
     }
 
     public void SetupQuestion()
@@ -105,12 +105,9 @@ public class Quiz : MonoBehaviour
         SetButtonState(false); // Lock buttons while setting up the next question
         if (availableQuestions.Count == 0)
         {
-            Debug.Log("No more questions available.");
-            if (progressBar.value == progressBar.maxValue)
-            {
-                isComplete = true;
-            }
-            return; // No more questions to display
+            // No more questions to display
+            EndGame();
+            return;
         }
 
         GetRandomQuestion();
@@ -125,7 +122,6 @@ public class Quiz : MonoBehaviour
 
     public void CheckAnswer(int index)
     {
-        
         if (index >= currentQuestion.Answers.Count)
         {
             return;
@@ -186,5 +182,11 @@ public class Quiz : MonoBehaviour
                 answerButtons[i].GetComponent<Image>().color = Color.white;
             }
         }
+    }
+
+    void EndGame()
+    {
+        endGamePanel.SetActive(true); // Show the end game panel
+        // Add any additional end game logic here, like stopping the game or showing scores.
     }
 }

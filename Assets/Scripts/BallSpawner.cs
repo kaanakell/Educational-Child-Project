@@ -383,7 +383,7 @@ public class BallSpawner : MonoBehaviour
         wordsFound = 0;
         hintsUsed = 0;
         wordsToFind = (sessionNumber == 1) ? 3 : sessionNumber == 2 ? 5 : 10;  // Adjust words to find based on the session
-        maxBalls += sessionNumber * 5;  // Increase difficulty by increasing the number of balls
+        maxBalls += sessionNumber * 3;  // Increase difficulty by increasing the number of balls
         foreach (GameObject ball in spawnedBalls)
         {
             if (ball != null)

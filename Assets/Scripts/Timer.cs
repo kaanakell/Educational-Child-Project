@@ -1,15 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class Timer : MonoBehaviour
 {
-    private GameObject TimerObject;
     [SerializeField] TextMeshProUGUI timerText;
-    private GameObject EndGamePanel;
+    [SerializeField] GameObject EndGamePanel; // Ensure this is assigned in the Inspector
 
     private bool isTimerRunning = false;
     private float delayTimer = 3.5f; // Delay before starting the timer
@@ -32,7 +27,7 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public void ElapsedTime()
+    private void ElapsedTime()
     {
         if (!IsEndGamePanelActive()) // Check if the end game panel is not active
         {
@@ -51,6 +46,11 @@ public class Timer : MonoBehaviour
     public void ResumeTimer()
     {
         isTimerRunning = true;
+    }
+
+    public void ResetTimer()
+    {
+        elapsedTime = 0f;
     }
 
     private bool IsEndGamePanelActive()

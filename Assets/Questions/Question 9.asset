@@ -23,4 +23,4 @@ MonoBehaviour:
     answerImage: {fileID: 0}
   - answerText: 9138
     answerImage: {fileID: 0}
-  correctAnswerIndex: 1
+  correctAnswerIndex: 0

@@ -30,4 +30,4 @@ MonoBehaviour:
     answerImage: {fileID: 3080350668531845144, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
   - answerText: 
     answerImage: {fileID: 4571355115525206738, guid: 656802d0d5df03d4ab7b742501fa1b16, type: 3}
-  correctAnswerIndex: 1
+  correctAnswerIndex: 0

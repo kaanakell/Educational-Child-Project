@@ -2326,8 +2326,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bec169ed08c67a149b3a9077097e6bda, type: 2}
   - {fileID: 11400000, guid: b6e0bdbf78c6f6649a548e36e2b16cb5, type: 2}
   - {fileID: 11400000, guid: 256294d8267483540b17375efa421436, type: 2}
+  endGamePanel: {fileID: 8334165037084074488}
   progressBar: {fileID: 522602112}
-  isComplete: 0
 --- !u!1 &1980338151
 GameObject:
   m_ObjectHideFlags: 0
@@ -3303,6 +3303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89bae7e12926ed340aaa849d9cbdcd8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settingsMenuUI: {fileID: 0}
 --- !u!1 &2711842062521172970
 GameObject:
   m_ObjectHideFlags: 0
@@ -4140,6 +4141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1bc43699ffd5f34ab1665da47bad10f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 0}
 --- !u!114 &6349161857483797571
 MonoBehaviour:
   m_ObjectHideFlags: 0

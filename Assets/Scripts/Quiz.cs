@@ -133,8 +133,15 @@ public class Quiz : MonoBehaviour
         Debug.Log(isCorrect ? "Correct answer!" : "Wrong answer!");
 
         // Change button color
-        Color color = isCorrect ? Color.green : Color.red;
-        answerButtons[index].GetComponent<Image>().color = color;
+        Color buttonColor = isCorrect ? Color.green : Color.red;
+        answerButtons[index].GetComponent<Image>().color = buttonColor;
+
+        // Change text color
+        TextMeshProUGUI buttonText = answerButtons[index].GetComponentInChildren<TextMeshProUGUI>();
+        if (buttonText != null)
+        {
+            buttonText.color = buttonColor;
+        }
 
         // Lock buttons
         SetButtonState(false);
@@ -166,6 +173,11 @@ public class Quiz : MonoBehaviour
         {
             // Reset button color to default when re-enabling
             answerButtons[i].GetComponent<Image>().color = Color.white;
+            TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+            if (buttonText != null)
+            {
+                buttonText.color = Color.black; // Reset text color to default (adjust as needed)
+            }
         }
     }
 
@@ -180,6 +192,11 @@ public class Quiz : MonoBehaviour
             {
                 // Reset button color to default when re-enabling
                 answerButtons[i].GetComponent<Image>().color = Color.white;
+                TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+                if (buttonText != null)
+                {
+                    buttonText.color = Color.black; // Reset text color to default (adjust as needed)
+                }
             }
         }
     }

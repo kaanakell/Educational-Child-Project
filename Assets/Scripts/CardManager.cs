@@ -146,7 +146,7 @@ public class CardManager : MonoBehaviour
         }
 
         // Wait for a short delay
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(5f);
 
         // Flip all cards back to their hidden state
         foreach (var card in CardList)

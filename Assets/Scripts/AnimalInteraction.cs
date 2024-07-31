@@ -72,6 +72,7 @@ public class AnimalInteraction : MonoBehaviour
             {
                 // The animal is within matchDistance of a habitat
                 IsMatched = true;
+                Debug.Log($"{gameObject.name} matched with habitat.");
                 GameManager.Instance.AnimalMatched();
                 // Optional: disable further interaction
                 this.enabled = false;

@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MuteSoundEffectButton : MonoBehaviour
+public class MuteButtonforAnimalGame : MonoBehaviour
 {
     public Sprite UnMutedFxSprite;
     public Sprite MutedFxSprite;
@@ -11,7 +9,6 @@ public class MuteSoundEffectButton : MonoBehaviour
     private Button _button;
     private SpriteState _state;
 
-    // Start is called before the first frame update
     void Start()
     {
         _button = GetComponent<Button>();
@@ -29,9 +26,9 @@ public class MuteSoundEffectButton : MonoBehaviour
             return;
         }
 
-        if (GameSettings.Instance == null)
+        if (GameManager.Instance == null)
         {
-            Debug.LogError("GameSettings.Instance is null!");
+            Debug.LogError("GameManager.Instance is null!");
             return;
         }
 
@@ -40,26 +37,14 @@ public class MuteSoundEffectButton : MonoBehaviour
 
     void Update()
     {
-        UpdateButtonSprite();
+        if (GameManager.Instance != null)
+        {
+            UpdateButtonSprite();
+        }
     }
 
     private void UpdateButtonSprite()
     {
-        if (GameSettings.Instance.IsSoundEffectMutedPermanently())
-        {
-            _state.pressedSprite = MutedFxSprite;
-            _state.highlightedSprite = MutedFxSprite;
-            _button.GetComponent<Image>().sprite = MutedFxSprite;
-            MuteAllAudio(true);
-        }
-        else
-        {
-            _state.pressedSprite = UnMutedFxSprite;
-            _state.highlightedSprite = UnMutedFxSprite;
-            _button.GetComponent<Image>().sprite = UnMutedFxSprite;
-            MuteAllAudio(false);
-        }
-
         if (GameManager.Instance.IsSoundEffectMutedPermanently())
         {
             _state.pressedSprite = MutedFxSprite;
@@ -80,13 +65,19 @@ public class MuteSoundEffectButton : MonoBehaviour
 
     public void ToggleFxIcon()
     {
-        if (GameSettings.Instance.IsSoundEffectMutedPermanently())
+        if (GameManager.Instance == null)
         {
-            GameSettings.Instance.MuteSoundEffectPermanently(false);
+            Debug.LogError("GameManager.Instance is null!");
+            return;
+        }
+
+        if (GameManager.Instance.IsSoundEffectMutedPermanently())
+        {
+            GameManager.Instance.MuteSoundEffectPermanently(false);
         }
         else
         {
-            GameSettings.Instance.MuteSoundEffectPermanently(true);
+            GameManager.Instance.MuteSoundEffectPermanently(true);
         }
 
         UpdateButtonSprite();

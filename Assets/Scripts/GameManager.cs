@@ -1,13 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager Instance;
-    public GameObject endGamePanel;
+
     private int totalAnimals;
     private int matchedAnimals;
+    private bool isGameEnded = false; // Flag to indicate if the game has ended
+    public int gamePlayed = 1;
+
+    private bool _muteFxPermanently = false;
 
     void Awake()
     {
@@ -15,29 +18,38 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log("GameManager instance created.");
         }
         else
         {
             Destroy(gameObject);
+            Debug.LogWarning("Duplicate GameManager instance destroyed.");
         }
     }
 
     void Start()
     {
-        endGamePanel.SetActive(false);
-        totalAnimals = FindObjectsOfType<AnimalInteraction>().Length;
         matchedAnimals = 0;
+        isGameEnded = false;
+        UpdateTotalAnimalsCount();
+    }
+
+    public void UpdateTotalAnimalsCount()
+    {
+        totalAnimals = FindObjectsOfType<AnimalInteraction>().Length;
+        Debug.Log($"Total Animals: {totalAnimals}");
     }
 
     public void AnimalMatched()
     {
         matchedAnimals++;
+        Debug.Log($"Matched Animals: {matchedAnimals}");
         CheckEndCondition();
     }
 
     public void CheckEndCondition()
     {
-        if (matchedAnimals >= totalAnimals)
+        if (matchedAnimals >= totalAnimals && !isGameEnded)
         {
             EndGame();
         }
@@ -45,7 +57,28 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        endGamePanel.SetActive(true);
-        // Add any other end game logic here, like stopping the game or showing scores.
+        if (isGameEnded) return; // Ensure EndGame is only called once
+
+        isGameEnded = true; // Set the flag to true to prevent multiple calls
+        Debug.Log("End game condition met.");
+        EndGameManager.Instance.ShowEndGamePanel(); // Notify EndGameManager to show the end game panel
+    }
+
+    public void RestartGame()
+    {
+        isGameEnded = false;
+        matchedAnimals = 0;
+        Time.timeScale = 1f; // Reset the time scale
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+    }
+
+    public void MuteSoundEffectPermanently(bool muted)
+    {
+        _muteFxPermanently = muted;
+    }
+
+    public bool IsSoundEffectMutedPermanently() 
+    {
+        return _muteFxPermanently;
     }
 }

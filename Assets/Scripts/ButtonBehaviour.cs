@@ -17,6 +17,9 @@ public class ButtonBehaviour : MonoBehaviour
     public AudioClip buttonSoundEffect;
     private AudioSource audioSource;
 
+    private int gameRestart;
+    private const string GameRestartKey = "GameRestart"; // Key for PlayerPrefs
+
     // Scene Names
     public string gameMenuSceneName = "Game Menu"; // Set this to your actual game menu scene name
 
@@ -28,6 +31,10 @@ public class ButtonBehaviour : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        // Load the game restart count from PlayerPrefs
+        gameRestart = PlayerPrefs.GetInt(GameRestartKey, 0);
+        Debug.Log($"Loaded Game Restart Count: {gameRestart}");
     }
 
     public void TogglePause()
@@ -72,6 +79,21 @@ public class ButtonBehaviour : MonoBehaviour
 
     public void RestartGame()
     {
+        gameRestart++;
+        Debug.Log($"Game Restart Count: {gameRestart}");
+        PlayerPrefs.SetInt(GameRestartKey, gameRestart); // Save the count to PlayerPrefs
+
+        AdsManager.Instance.bannerAds.ShowBannerAd();
+
+        if (gameRestart >= 3)
+        {
+            Debug.Log("Attempting to show interstitial ad...");
+            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            AdsManager.Instance.bannerAds.HideBannerAd();
+            gameRestart = 0; // Reset count after showing ad
+            PlayerPrefs.SetInt(GameRestartKey, gameRestart); // Save the reset count to PlayerPrefs
+        }
+
         StartCoroutine(PlaySoundAndRestartGame());
     }
 
@@ -119,9 +141,8 @@ public class ButtonBehaviour : MonoBehaviour
         PlaySound();
         // Wait for the sound effect to finish
         yield return new WaitForSeconds(buttonSoundEffect.length);
-        // Reload the scene
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Reload the scene using GameManager's RestartGame method
+        GameManager.Instance.RestartGame();
         Debug.Log("The button is working");
     }
 }

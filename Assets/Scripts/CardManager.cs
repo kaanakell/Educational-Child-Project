@@ -81,6 +81,8 @@ public class CardManager : MonoBehaviour
     private int _removedPairs;
     private Timer _gameTimer;
 
+    public int gamePlayed = 1;
+
 
     // Start is called before the first frame update
     void Start()
@@ -138,7 +140,7 @@ public class CardManager : MonoBehaviour
     private IEnumerator StartLevel()
     {
         // Your logic to set up the level goes here
-
+        AdsManager.Instance.bannerAds.ShowBannerAd();
         // Reveal all cards
         foreach (var card in CardList)
         {
@@ -310,8 +312,14 @@ public class CardManager : MonoBehaviour
         {
             CurrentGameState = GameState.GameEnd;
             _gameTimer.PauseTimer(); // Stop the timer
+            AdsManager.Instance.bannerAds.HideBannerAd();
         }
 
+        if(gamePlayed % 3 == 0)
+        {
+            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+        }
+        
         return CurrentGameState == GameState.GameEnd;
     }
 

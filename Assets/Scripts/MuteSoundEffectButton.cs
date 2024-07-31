@@ -59,23 +59,6 @@ public class MuteSoundEffectButton : MonoBehaviour
             _button.GetComponent<Image>().sprite = UnMutedFxSprite;
             MuteAllAudio(false);
         }
-
-        if (GameManager.Instance.IsSoundEffectMutedPermanently())
-        {
-            _state.pressedSprite = MutedFxSprite;
-            _state.highlightedSprite = MutedFxSprite;
-            _button.GetComponent<Image>().sprite = MutedFxSprite;
-            MuteAllAudio(true);
-        }
-        else
-        {
-            _state.pressedSprite = UnMutedFxSprite;
-            _state.highlightedSprite = UnMutedFxSprite;
-            _button.GetComponent<Image>().sprite = UnMutedFxSprite;
-            MuteAllAudio(false);
-        }
-
-        _button.spriteState = _state;
     }
 
     public void ToggleFxIcon()

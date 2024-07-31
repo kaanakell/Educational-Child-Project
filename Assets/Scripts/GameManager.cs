@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,6 +33,14 @@ public class GameManager : MonoBehaviour
         matchedAnimals = 0;
         isGameEnded = false;
         UpdateTotalAnimalsCount();
+
+        StartCoroutine(DisplayBannerWithDelay());
+    }
+
+    private IEnumerator DisplayBannerWithDelay()
+    {
+        yield return new WaitForSeconds(1f);
+        AdsManager.Instance.bannerAds.ShowBannerAd();
     }
 
     public void UpdateTotalAnimalsCount()

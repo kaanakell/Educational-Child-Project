@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ButtonBehaviour : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class ButtonBehaviour : MonoBehaviour
     // Settings Menu UI
     public GameObject settingsMenuUI;
     private bool isSettingsPanelActive = false;
+
+    //Credit Panel 
+    public GameObject creditPanel;
 
     // Button Sounds
     public AudioClip buttonSoundEffect;
@@ -112,6 +116,11 @@ public class ButtonBehaviour : MonoBehaviour
         PlaySound();
         settingsMenuUI.SetActive(false);
         isSettingsPanelActive = false;
+    }
+
+    public void ToggleCreditPanel()
+    {
+        creditPanel.SetActive(!creditPanel.activeSelf);
     }
 
     private void PlaySound()

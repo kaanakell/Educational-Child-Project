@@ -38,6 +38,8 @@ public class BallSpawner : MonoBehaviour
 
     public string wordsFileName = "words"; // Name of the words file in Resources (without .txt)
 
+    private int gamesPlayed = 1;
+
 
     void Start()
 {
@@ -431,6 +433,7 @@ void LoadWordsFromFile()
 
     void StartNewSession()
     {
+        gamesPlayed++;
         sessionNumber++;
         wordsFound = 0;
         hintsUsed = 0;
@@ -442,6 +445,10 @@ void LoadWordsFromFile()
             {
                 Destroy(ball);
             }
+        }
+        if(gamesPlayed % 3 == 0)
+        {
+            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
         }
         spawnedBalls.Clear();
         StartCoroutine(SpawnBallsCoroutine());

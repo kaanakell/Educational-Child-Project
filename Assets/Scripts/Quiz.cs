@@ -19,6 +19,8 @@ public class Quiz : MonoBehaviour
     private List<QuestionSO> availableQuestions;
     private bool buttonClicked = false;
 
+    private int gamesPlayed = 1;
+
     void Start()
     {
         // Create a copy of the original questions list to track available questions
@@ -205,5 +207,10 @@ public class Quiz : MonoBehaviour
     {
         endGamePanel.SetActive(true); // Show the end game panel
         // Add any additional end game logic here, like stopping the game or showing scores.
+        gamesPlayed++;
+        if(gamesPlayed % 3 == 0)
+        {
+            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+        }
     }
 }

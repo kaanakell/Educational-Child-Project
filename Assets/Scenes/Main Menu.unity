@@ -1096,7 +1096,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1549094923}
         m_TargetAssemblyTypeName: ButtonBehaviour, Assembly-CSharp
-        m_MethodName: Settings
+        m_MethodName: OpenSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3332,8 +3332,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1056.2, y: -354}
+  m_AnchoredPosition: {x: 0, y: -46.393803}
+  m_SizeDelta: {x: -1056.2, y: -177.0616}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1492028322
 MonoBehaviour:
@@ -4942,7 +4942,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -754, y: -435}
+  m_AnchoredPosition: {x: -754, y: -359}
   m_SizeDelta: {x: 240.5753, y: 83.8849}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2050329062
@@ -5425,8 +5425,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1, y: -233.09}
-  m_SizeDelta: {x: 157.08, y: 150}
+  m_AnchoredPosition: {x: 14.0239, y: -159}
+  m_SizeDelta: {x: 131.0321, y: 125.9558}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4587657777041636566
 GameObject:
@@ -5650,8 +5650,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1000, y: -400}
+  m_AnchoredPosition: {x: 0, y: -11.499999}
+  m_SizeDelta: {x: -1000, y: -377}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7853022159294333474
 GameObject:

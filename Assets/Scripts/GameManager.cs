@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             Debug.LogWarning("Duplicate GameManager instance destroyed.");
         }
+        AdManager.Instance.LoadAd();
     }
 
     void Start()
@@ -33,8 +34,7 @@ public class GameManager : MonoBehaviour
         matchedAnimals = 0;
         isGameEnded = false;
         UpdateTotalAnimalsCount();
-        AdsManager.Instance.bannerAds.ShowBannerAd();
-        
+        //AdsManager.Instance.bannerAds.ShowBannerAd();
     }
 
     public void UpdateTotalAnimalsCount()
@@ -55,6 +55,11 @@ public class GameManager : MonoBehaviour
         if (matchedAnimals >= totalAnimals && !isGameEnded)
         {
             EndGame();
+            if(gamePlayed % 3 == 0)
+            {
+                //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+                AdManager.Instance.ShowInterstitialAd();
+            }
         }
     }
 

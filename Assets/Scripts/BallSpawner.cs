@@ -448,7 +448,8 @@ void LoadWordsFromFile()
         }
         if(gamesPlayed % 3 == 0)
         {
-            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            AdManager.Instance.ShowInterstitialAd();
         }
         spawnedBalls.Clear();
         StartCoroutine(SpawnBallsCoroutine());

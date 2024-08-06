@@ -1,4 +1,5 @@
 using System.Collections;
+using GoogleMobileAds.Api;
 using UnityEngine;
 
 public class GameSettings : MonoBehaviour
@@ -28,7 +29,8 @@ public class GameSettings : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        AdsManager.Instance.bannerAds.ShowBannerAd();
+        //AdsManager.Instance.bannerAds.ShowBannerAd();
+        AdManager.Instance.LoadAd();
     }
 
     public void SetPairNumber(EPairNumber number)

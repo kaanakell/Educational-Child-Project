@@ -87,12 +87,14 @@ public class ButtonBehaviour : MonoBehaviour
         Debug.Log($"Game Restart Count: {gameRestart}");
         PlayerPrefs.SetInt(GameRestartKey, gameRestart); // Save the count to PlayerPrefs
 
-        AdsManager.Instance.bannerAds.ShowBannerAd();
+        //AdsManager.Instance.bannerAds.ShowBannerAd();
+        AdManager.Instance.LoadAd();
 
         if (gameRestart >= 3)
         {
             Debug.Log("Attempting to show interstitial ad...");
-            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            AdManager.Instance.ShowInterstitialAd();
             gameRestart = 0; // Reset count after showing ad
             PlayerPrefs.SetInt(GameRestartKey, gameRestart); // Save the reset count to PlayerPrefs
         }

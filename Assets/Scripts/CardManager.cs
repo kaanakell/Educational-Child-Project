@@ -140,7 +140,8 @@ public class CardManager : MonoBehaviour
     private IEnumerator StartLevel()
     {
         // Your logic to set up the level goes here
-        AdsManager.Instance.bannerAds.ShowBannerAd();
+        //AdsManager.Instance.bannerAds.ShowBannerAd();
+        AdManager.Instance.LoadAd();
         // Reveal all cards
         foreach (var card in CardList)
         {
@@ -316,7 +317,8 @@ public class CardManager : MonoBehaviour
 
         if(gamePlayed % 3 == 0)
         {
-            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            AdManager.Instance.ShowInterstitialAd();
         }
         
         return CurrentGameState == GameState.GameEnd;

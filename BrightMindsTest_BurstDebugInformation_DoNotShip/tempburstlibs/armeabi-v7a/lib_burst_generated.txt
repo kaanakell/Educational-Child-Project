@@ -29,10 +29,16 @@ Library: C:\Projects\Educational-Child-Project\Temp\BurstOutput\tempburstlibs\ar
 --assembly-defines=Unity.InputSystem.ForUI;
 --assembly-defines=Unity.Mathematics;
 --assembly-defines=Unity.VisualScripting.State;
+--assembly-defines=GoogleMobileAds.Common;
 --assembly-defines=Unity.Collections.LowLevel.ILSupport;
+--assembly-defines=GoogleMobileAds;
+--assembly-defines=GoogleMobileAds.Core;
 --assembly-defines=Newtonsoft.Json;
+--assembly-defines=GoogleMobileAds.Ump;
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Unity.Burst.Unsafe;
+--assembly-defines=GoogleMobileAds.Android;
+--assembly-defines=GoogleMobileAds.Ump.Android;
 --assembly-defines=System.Runtime;
 --assembly-defines=netstandard;
 --assembly-defines=Mono.Security;

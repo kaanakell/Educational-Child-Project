@@ -210,7 +210,8 @@ public class Quiz : MonoBehaviour
         gamesPlayed++;
         if(gamesPlayed % 3 == 0)
         {
-            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            AdManager.Instance.ShowInterstitialAd();
         }
     }
 }

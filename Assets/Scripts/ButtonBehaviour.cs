@@ -93,7 +93,6 @@ public class ButtonBehaviour : MonoBehaviour
         {
             Debug.Log("Attempting to show interstitial ad...");
             AdsManager.Instance.interstitialAds.ShowInterstitialAd();
-            AdsManager.Instance.bannerAds.HideBannerAd();
             gameRestart = 0; // Reset count after showing ad
             PlayerPrefs.SetInt(GameRestartKey, gameRestart); // Save the reset count to PlayerPrefs
         }

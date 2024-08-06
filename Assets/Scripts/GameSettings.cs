@@ -28,12 +28,6 @@ public class GameSettings : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        StartCoroutine(DisplayBannerWithDelay());
-    }
-
-    private IEnumerator DisplayBannerWithDelay()
-    {
-        yield return new WaitForSeconds(1f);
         AdsManager.Instance.bannerAds.ShowBannerAd();
     }
 

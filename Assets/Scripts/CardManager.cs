@@ -312,7 +312,6 @@ public class CardManager : MonoBehaviour
         {
             CurrentGameState = GameState.GameEnd;
             _gameTimer.PauseTimer(); // Stop the timer
-            AdsManager.Instance.bannerAds.HideBannerAd();
         }
 
         if(gamePlayed % 3 == 0)

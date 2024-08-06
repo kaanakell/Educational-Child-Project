@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27de8aa1b875d824bb2ac11261b07e48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bannerPosition: 4
+  bannerPosition: 0
   androidAdUnitId: Banner_Android
   iosAdUnitId: Banner_iOS
 --- !u!114 &5040504456992151109

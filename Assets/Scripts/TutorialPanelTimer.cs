@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TutorialPanelTimer : MonoBehaviour
 {
     public GameObject tutorialPanel; // Assign your panel in the Inspector
-    public float displayTime = 5f; // Time to display the panel
+    public float displayTime = 1f; // Time to display the panel
 
     void Start()
     {

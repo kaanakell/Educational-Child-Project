@@ -81,7 +81,7 @@ public class CardManager : MonoBehaviour
     private int _removedPairs;
     private Timer _gameTimer;
 
-    public int gamePlayed = 1;
+    
 
 
     // Start is called before the first frame update
@@ -313,14 +313,13 @@ public class CardManager : MonoBehaviour
         {
             CurrentGameState = GameState.GameEnd;
             _gameTimer.PauseTimer(); // Stop the timer
-        }
 
-        if(gamePlayed % 3 == 0)
-        {
-            //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
-            AdManager.Instance.ShowInterstitialAd();
+            // Check if the ad should be shown after every 3 games
+            if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Memory Matching Lvl3")
+            {
+                AdManager.Instance.ShowInterstitialAd();
+            }
         }
-        
         return CurrentGameState == GameState.GameEnd;
     }
 

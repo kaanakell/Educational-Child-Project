@@ -73,3 +73,5 @@ crashlytics-build.properties
 Assets/Scripts/Ads Plugin/AdManager.cs
 ProjectSettings/AndroidResolverDependencies.xml
 ProjectSettings/ProjectSettings.asset
+Assets/GoogleMobileAds/Editor/Resources/PlaceholderAds/Banners/BANNER.prefab
+Assets/GoogleMobileAds/Editor/Resources/PlaceholderAds/Interstitials/1024x768.prefab

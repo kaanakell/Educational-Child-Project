@@ -3606,7 +3606,9 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 2606472934358069646}
   settingsMenuUI: {fileID: 0}
   creditPanel: {fileID: 0}
-  buttonSoundEffect: {fileID: 8300000, guid: 416391621531d8d42affbadd76e67242, type: 3}
+  endGamePanel: {fileID: 8334165037084074488}
+  pauseButton: {fileID: 5552942057976890744}
+  buttonSoundEffect: {fileID: 0}
   gameMenuSceneName: Game Menu
 --- !u!1 &2711842062521172970
 GameObject:

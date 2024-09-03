@@ -1,48 +1,37 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class ButtonBehaviour : MonoBehaviour
 {
-    // Pause Menu UI
     public GameObject pauseMenuUI;
     private bool isPaused = false;
 
-    // Settings Menu UI
     public GameObject settingsMenuUI;
     private bool isSettingsPanelActive = false;
 
-    //Credit Panel 
     public GameObject creditPanel;
 
-    // Button Sounds
-    public AudioClip buttonSoundEffect;
-    private AudioSource audioSource;
+    public GameObject endGamePanel; 
+    public Button pauseButton;
 
     private int gameRestart;
-    private const string GameRestartKey = "GameRestart"; // Key for PlayerPrefs
-
-    // Scene Names
-    public string gameMenuSceneName = "Game Menu"; // Set this to your actual game menu scene name
+    private const string GameRestartKey = "GameRestart"; 
+    public string gameMenuSceneName = "Game Menu";
 
     void Start()
     {
-        // Initialize AudioSource
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-
-        // Load the game restart count from PlayerPrefs
         gameRestart = PlayerPrefs.GetInt(GameRestartKey, 0);
-        Debug.Log($"Loaded Game Restart Count: {gameRestart}");
     }
 
     public void TogglePause()
     {
+        if (endGamePanel.activeSelf) 
+        {
+            Debug.Log("Pause menu cannot be opened because the end game panel is active.");
+            return;
+        }
+
         if (isPaused)
         {
             Resume();
@@ -62,49 +51,98 @@ public class ButtonBehaviour : MonoBehaviour
 
     public void Pause()
     {
+        // Null check for pauseMenuUI
+        if (pauseMenuUI == null)
+        {
+            Debug.LogError("Pause menu UI is not assigned or is missing.");
+            return;
+        }
+
+        // Null check for endGamePanel
+        if (endGamePanel == null)
+        {
+            Debug.LogError("End game panel is not assigned or is missing.");
+            return;
+        }
+
+        // Check if the end game panel is active
+        if (endGamePanel.activeSelf) 
+        {
+            Debug.Log("Pause menu cannot be opened because the end game panel is active.");
+            return;
+        }
+
+        // Proceed to pause the game if all checks pass
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
+    }
+
+    public void ShowEndGamePanel()
+    {
+        endGamePanel.SetActive(true);
+        Time.timeScale = 0f;  // Pause the game when the end game panel is shown
+        DisablePauseButton(); // Disable the pause button when the end game panel is active
+    }
+
+    private void DisablePauseButton()
+    {
+        if (pauseButton != null)
+        {
+            pauseButton.interactable = false;  // Disable the pause button
+        }
     }
 
     public void LoadScene(string sceneName)
     {
         if (sceneName == gameMenuSceneName)
         {
-            // Directly load the Game Menu scene without sound effect
             SceneManager.LoadScene(sceneName);
             Time.timeScale = 1f;
         }
         else
         {
-            StartCoroutine(PlaySoundAndLoadScene(sceneName));
+            GameSettings.Instance.AdjustSettingsForLevel(sceneName);
+            SceneManager.LoadScene(sceneName);
+            Time.timeScale = 1f;
         }
     }
 
     public void RestartGame()
     {
         gameRestart++;
-        Debug.Log($"Game Restart Count: {gameRestart}");
-        PlayerPrefs.SetInt(GameRestartKey, gameRestart); // Save the count to PlayerPrefs
+        PlayerPrefs.SetInt(GameRestartKey, gameRestart); 
 
-        //AdsManager.Instance.bannerAds.ShowBannerAd();
-        AdManager.Instance.LoadAd();
-
-        if (gameRestart >= 3)
+        if (AdManager.Instance != null)
         {
-            Debug.Log("Attempting to show interstitial ad...");
-            //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
-            AdManager.Instance.ShowInterstitialAd();
-            gameRestart = 0; // Reset count after showing ad
-            PlayerPrefs.SetInt(GameRestartKey, gameRestart); // Save the reset count to PlayerPrefs
+            AdManager.Instance.LoadAd();
+
+            if (gameRestart >= 3)
+            {
+                AdManager.Instance.ShowInterstitialAd();
+                gameRestart = 0; 
+                PlayerPrefs.SetInt(GameRestartKey, gameRestart); 
+            }
+        }
+        else
+        {
+            Debug.LogError("AdManager instance is not set. Make sure AdManager is properly initialized.");
         }
 
-        StartCoroutine(PlaySoundAndRestartGame());
+        // Directly restart the game without coroutine
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RestartGame();
+            Debug.Log("The button is working");
+        }
+        else
+        {
+            Debug.LogError("GameManager instance is not set. Make sure GameManager is properly initialized.");
+        }
     }
 
     public void OpenSettings()
     {
-        PlaySound();
         if (!isSettingsPanelActive)
         {
             settingsMenuUI.SetActive(true);
@@ -114,7 +152,6 @@ public class ButtonBehaviour : MonoBehaviour
 
     public void CloseSettings()
     {
-        PlaySound();
         settingsMenuUI.SetActive(false);
         isSettingsPanelActive = false;
     }
@@ -122,37 +159,5 @@ public class ButtonBehaviour : MonoBehaviour
     public void ToggleCreditPanel()
     {
         creditPanel.SetActive(!creditPanel.activeSelf);
-    }
-
-    private void PlaySound()
-    {
-        if (buttonSoundEffect != null)
-        {
-            audioSource.PlayOneShot(buttonSoundEffect);
-        }
-        else
-        {
-            Debug.LogWarning("Button sound effect is not assigned.");
-        }
-    }
-
-    private IEnumerator PlaySoundAndLoadScene(string sceneName)
-    {
-        PlaySound();
-        // Wait for the sound effect to finish
-        yield return new WaitForSeconds(buttonSoundEffect.length);
-        GameSettings.Instance.AdjustSettingsForLevel(sceneName); // Adjust settings if necessary
-        SceneManager.LoadScene(sceneName);
-        Time.timeScale = 1f;
-    }
-
-    private IEnumerator PlaySoundAndRestartGame()
-    {
-        PlaySound();
-        // Wait for the sound effect to finish
-        yield return new WaitForSeconds(buttonSoundEffect.length);
-        // Reload the scene using GameManager's RestartGame method
-        GameManager.Instance.RestartGame();
-        Debug.Log("The button is working");
     }
 }

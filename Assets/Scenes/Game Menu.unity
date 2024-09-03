@@ -802,7 +802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.3140038, b: 0.023584902, a: 0.40392157}
+  m_Color: {r: 0.1933323, g: 1, b: 0.02352941, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1544,7 +1544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.3140038, b: 0.023584902, a: 0.40392157}
+  m_Color: {r: 1, g: 0.5690721, b: 0.02352941, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3680,7 +3680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.3140038, b: 0.023584902, a: 0.40392157}
+  m_Color: {r: 0.02352941, g: 0.8963403, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4475,7 +4475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.3140038, b: 0.023584902, a: 0.40392157}
+  m_Color: {r: 1, g: 0.02352941, b: 0.5197547, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4518,7 +4518,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 25
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -4880,7 +4880,8 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 0}
   settingsMenuUI: {fileID: 0}
   creditPanel: {fileID: 0}
-  buttonSoundEffect: {fileID: 8300000, guid: 7e7be5efcca9043468c656d7bc8fb7c1, type: 3}
+  endGamePanel: {fileID: 0}
+  pauseButton: {fileID: 0}
   gameMenuSceneName: Game Menu
 --- !u!4 &1618487502
 Transform:

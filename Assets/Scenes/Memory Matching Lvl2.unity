@@ -1110,7 +1110,8 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 788008760715517532}
   settingsMenuUI: {fileID: 0}
   creditPanel: {fileID: 0}
-  buttonSoundEffect: {fileID: 8300000, guid: 416391621531d8d42affbadd76e67242, type: 3}
+  endGamePanel: {fileID: 4527364963072951040}
+  pauseButton: {fileID: 2320064295337685546}
   gameMenuSceneName: Game Menu
 --- !u!4 &786071005
 Transform:
@@ -1823,6 +1824,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1699129414
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1066821661332963872, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.666382
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.8847256
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.28543
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141990131311782907, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f33dd1f7f0d45074392c6f8f1b5a8b1e, type: 3}
 --- !u!1 &1721420902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1965,7 +2023,6 @@ MonoBehaviour:
   CurrentPuzzleState: 0
   PuzzleRevealedNumber: 0
   CardList: []
-  gamePlayed: 1
 --- !u!1 &2140665632
 GameObject:
   m_ObjectHideFlags: 0
@@ -4916,3 +4973,4 @@ SceneRoots:
   - {fileID: 1065479679}
   - {fileID: 2478941710428381403}
   - {fileID: 346857808}
+  - {fileID: 1699129414}

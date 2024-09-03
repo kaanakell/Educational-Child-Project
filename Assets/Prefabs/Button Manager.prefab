@@ -45,6 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89bae7e12926ed340aaa849d9cbdcd8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenuUI: {fileID: 0}
+  settingsMenuUI: {fileID: 0}
+  creditPanel: {fileID: 0}
+  endGamePanel: {fileID: 0}
+  pauseButton: {fileID: 0}
+  buttonSoundEffect: {fileID: 8300000, guid: 3bade8fc97fa4b6419361618e858a22e, type: 3}
+  gameMenuSceneName: Game Menu
 --- !u!114 &1162039283293700634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,5 +65,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 0}
-  pauseButton: {fileID: 0}
-  resumeButton: {fileID: 0}

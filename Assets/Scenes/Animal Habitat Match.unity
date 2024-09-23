@@ -886,7 +886,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0808, y: 0.0809, z: 20}
-  m_LocalScale: {x: 18.547674, y: 18.523874, z: 1}
+  m_LocalScale: {x: 20.593481, y: 18.523874, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 905973167}
@@ -1034,7 +1034,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0808, y: 0.0809, z: 20}
-  m_LocalScale: {x: 18.547674, y: 18.523874, z: 1}
+  m_LocalScale: {x: 20.446955, y: 18.523874, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 797716453}
@@ -1804,7 +1804,10 @@ MonoBehaviour:
   - {fileID: 204968045677732634, guid: 188e25a94f95b7f40ad714190a245325, type: 3}
   - {fileID: 545994667139644140, guid: 5d4db373e35226349a109a8f247c851b, type: 3}
   - {fileID: 1227657240047387195, guid: 9ed53f7baa6341747beeb150a312a028, type: 3}
-  - {fileID: 1227657240047387195, guid: 46bb6f7bf31575e4eb1c1ce30c7e5b60, type: 3}
+  - {fileID: 1227657240047387195, guid: 6d0c381e5ff29994091b8b5add17c6f3, type: 3}
+  - {fileID: 204968045677732634, guid: 09d359af226d68748bb168386b2219da, type: 3}
+  - {fileID: 1227657240047387195, guid: 48066a73d82360946a614e3c740d8383, type: 3}
+  - {fileID: 1227657240047387195, guid: 1bc15891af9533647badf55743633890, type: 3}
   row: {fileID: 1870202550}
   spaceBetweenAnimals: 20
 --- !u!4 &780472727
@@ -1816,7 +1819,7 @@ Transform:
   m_GameObject: {fileID: 780472725}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 5}
+  m_LocalPosition: {x: 0, y: 10, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1833,6 +1836,10 @@ PrefabInstance:
     - target: {fileID: 436553583659340464, guid: fba75178f313a05409ef59daae718bc5, type: 3}
       propertyPath: m_Name
       value: Ads
+      objectReference: {fileID: 0}
+    - target: {fileID: 436553583659340464, guid: fba75178f313a05409ef59daae718bc5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5385811412134004346, guid: fba75178f313a05409ef59daae718bc5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2314,7 +2321,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0808, y: 0.0809, z: 20}
-  m_LocalScale: {x: 18.547674, y: 18.523874, z: 1}
+  m_LocalScale: {x: 20.593481, y: 18.523874, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 70963644}
@@ -2758,7 +2765,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0808, y: 0.0809, z: 20}
-  m_LocalScale: {x: 18.547674, y: 18.523874, z: 1}
+  m_LocalScale: {x: 20.446955, y: 18.523874, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1757961084}
@@ -3214,7 +3221,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0808, y: 0.0809, z: 20}
-  m_LocalScale: {x: 18.547674, y: 18.523874, z: 1}
+  m_LocalScale: {x: 20.446955, y: 18.523874, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1901617699}
@@ -3795,7 +3802,6 @@ MonoBehaviour:
   creditPanel: {fileID: 0}
   endGamePanel: {fileID: 5328467361470880716}
   pauseButton: {fileID: 371740010}
-  buttonSoundEffect: {fileID: 0}
   gameMenuSceneName: Game Menu
 --- !u!4 &1839182051
 Transform:
@@ -3921,7 +3927,7 @@ Transform:
   m_GameObject: {fileID: 1870202550}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20, y: 5, z: 5}
+  m_LocalPosition: {x: -20, y: 10, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4261,7 +4267,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0808, y: 0.0809, z: 20}
-  m_LocalScale: {x: 18.547674, y: 18.523874, z: 1}
+  m_LocalScale: {x: 20.446955, y: 18.523874, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 922964577}

@@ -77,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 21300000, guid: 8d6208c853e070540a0731a556d275ed, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 08d546343085ee84b94ecb10fcb11b68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 12.18, y: 7.52}
+  m_Size: {x: 9.35, y: 10.19}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b559cf2bfca9f048b667e41f4e8ccee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchDistance: 1
+  matchDistance: 3
 --- !u!54 &-4291769280004620245
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -147,8 +147,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 12.18, y: 7.52, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 9.684307, y: 10.492157, z: 0.2}
+  m_Center: {x: 0.022687912, y: -0.03403473, z: 0}
 --- !u!82 &-5064971447300315912
 AudioSource:
   m_ObjectHideFlags: 0

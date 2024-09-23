@@ -1807,7 +1807,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0012, y: 294}
+  m_AnchoredPosition: {x: 0.0012, y: 185}
   m_SizeDelta: {x: 863.774, y: 138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &597941919
@@ -3576,7 +3576,8 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 0}
   settingsMenuUI: {fileID: 7853022159294333474}
   creditPanel: {fileID: 1492028320}
-  buttonSoundEffect: {fileID: 8300000, guid: 416391621531d8d42affbadd76e67242, type: 3}
+  endGamePanel: {fileID: 0}
+  pauseButton: {fileID: 0}
   gameMenuSceneName: Game Menu
 --- !u!4 &1549094924
 Transform:

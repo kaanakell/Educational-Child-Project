@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b559cf2bfca9f048b667e41f4e8ccee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchDistance: 1
+  matchDistance: 3
 --- !u!54 &3310936842137062013
 Rigidbody:
   m_ObjectHideFlags: 0

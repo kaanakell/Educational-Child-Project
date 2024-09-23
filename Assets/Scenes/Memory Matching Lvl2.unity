@@ -309,6 +309,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ads
       objectReference: {fileID: 0}
+    - target: {fileID: 436553583659340464, guid: fba75178f313a05409ef59daae718bc5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5385811412134004346, guid: fba75178f313a05409ef59daae718bc5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 856.59796

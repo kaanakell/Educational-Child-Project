@@ -82,8 +82,6 @@ public class CardManager : MonoBehaviour
     private Timer _gameTimer;
 
     
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -159,49 +157,57 @@ public class CardManager : MonoBehaviour
     }
 
     public void CheckCard()
+{
+    CurrentGameState = GameState.Checking;
+    _revealedCardNumber = 0;
+
+    for (int id = 0; id < CardList.Count; id++)
     {
-        CurrentGameState = GameState.Checking;
-        _revealedCardNumber = 0;
-
-        for (int id = 0; id < CardList.Count; id++)
+        if (CardList[id].Revealed)
         {
-            if (CardList[id].Revealed && _revealedCardNumber < 2)
+            if (_revealedCardNumber == 0)
             {
-                if (_revealedCardNumber == 0)
-                {
-                    _firstRevealedCard = id;
-                    _revealedCardNumber++;
-                }
-                else if (_revealedCardNumber == 1)
-                {
-                    _secondRevealedCard = id;
-                    _revealedCardNumber++;
-                }
+                _firstRevealedCard = id;
+                _revealedCardNumber++;
             }
-        }
-
-        if (_revealedCardNumber == 2)
-        {
-            if (CardList[_firstRevealedCard].GetIndex() == CardList[_secondRevealedCard].GetIndex() && _firstRevealedCard != _secondRevealedCard)
+            else if (_revealedCardNumber == 1)
             {
-                CurrentGameState = GameState.DeletingPuzzles;
-                _cardToDestroy1 = _firstRevealedCard;
-                _cardToDestroy2 = _secondRevealedCard;
+                _secondRevealedCard = id;
+                _revealedCardNumber++;
             }
-            else
-            {
-                CurrentGameState = GameState.FlipBack;
-            }
-
-        }
-
-        CurrentPuzzleState = CardManager.PuzzleState.CanRotate;
-
-        if (CurrentGameState == GameState.Checking)
-        {
-            CurrentGameState = GameState.NoAction;
         }
     }
+
+    if (_revealedCardNumber == 2)
+    {
+        // Disable colliders for all cards
+        SetAllCollidersEnabled(false);
+
+        if (CardList[_firstRevealedCard].GetIndex() == CardList[_secondRevealedCard].GetIndex() && _firstRevealedCard != _secondRevealedCard)
+        {
+            CurrentGameState = GameState.DeletingPuzzles;
+            _cardToDestroy1 = _firstRevealedCard;
+            _cardToDestroy2 = _secondRevealedCard;
+        }
+        else
+        {
+            StartCoroutine(FlipBack()); // Flip back unmatched cards
+        }
+    }
+    else if (_revealedCardNumber == 1)
+    {
+        // Only one card is revealed, flip it back after 1 second
+        StartCoroutine(FlipBack());
+    }
+
+    CurrentPuzzleState = PuzzleState.CanRotate;
+
+    if (CurrentGameState == GameState.Checking)
+    {
+        CurrentGameState = GameState.NoAction;
+    }
+}
+
 
     private void DestroyCard()
     {
@@ -214,23 +220,49 @@ public class CardManager : MonoBehaviour
         CurrentPuzzleState = PuzzleState.CanRotate;
     }
 
-    private IEnumerator FlipBack()
+private bool isFlippingBack = false;
+
+private IEnumerator FlipBack()
+{
+    if (isFlippingBack) yield break; // Prevent multiple executions
+
+    isFlippingBack = true; // Set flag to true
+
+    yield return new WaitForSeconds(1f); // Wait for the duration of the flip back animation
+
+    // Flip the cards back
+    if (_firstRevealedCard >= 0)
     {
-        _corutineStarted = true;
-
-        yield return new WaitForSeconds(0.5f);
-
         CardList[_firstRevealedCard].FlipBack();
-        CardList[_secondRevealedCard].FlipBack();
-
         CardList[_firstRevealedCard].Revealed = false;
-        CardList[_secondRevealedCard].Revealed = false;
-
-        PuzzleRevealedNumber = RevealedState.NoRevealed;
-        CurrentGameState = GameState.NoAction;
-
-        _corutineStarted = false;
     }
+
+    if (_secondRevealedCard >= 0)
+    {
+        CardList[_secondRevealedCard].FlipBack();
+        CardList[_secondRevealedCard].Revealed = false;
+    }
+
+    // Reset the puzzle revealed state
+    PuzzleRevealedNumber = RevealedState.NoRevealed;
+    CurrentGameState = GameState.NoAction;
+
+    // Enable colliders for all cards
+    SetAllCollidersEnabled(true);
+
+    isFlippingBack = false; // Reset flag after completion
+}
+
+
+private void SetAllCollidersEnabled(bool isEnabled)
+{
+    foreach (var card in CardList)
+    {
+        card.GetComponent<Collider>().enabled = isEnabled;
+    }
+}
+
+
 
     private void LoadMaterials()
     {

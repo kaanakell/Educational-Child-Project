@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 8525459597805301245}
   - component: {fileID: -6988888589732568117}
   m_Layer: 0
-  m_Name: DarkWolf
-  m_TagString: Jungle
+  m_Name: Dog
+  m_TagString: Farm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -50.06762, y: 114.280136, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.9381106, y: 1.8148026, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 21300000, guid: 204afbafc0a90694f9e35e727959f6a8, type: 3}
-  m_Color: {r: 0.754717, g: 0.48781875, b: 0.28835887, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 0aeacfaaadf06e54da35391ce43f8679, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b559cf2bfca9f048b667e41f4e8ccee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchDistance: 1
+  matchDistance: 3
 --- !u!54 &3310936842137062013
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -147,8 +147,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10.63, y: 9.29, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.6575365, y: 5.552624, z: 0.2}
+  m_Center: {x: 0.020175153, y: -0.032783058, z: 0}
 --- !u!82 &-6988888589732568117
 AudioSource:
   m_ObjectHideFlags: 0
@@ -159,7 +159,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2a711b656b625364daa0593474532fe4, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b659cf8b9c34ae04b9843f3bc6f276b2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

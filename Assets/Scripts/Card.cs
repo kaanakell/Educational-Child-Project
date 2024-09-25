@@ -45,7 +45,7 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (_clicked == false)
+        if (_clicked == false && _cardManager.PuzzleRevealedNumber != CardManager.RevealedState.TwoRevealed && _cardManager.CurrentPuzzleState != CardManager.PuzzleState.PuzzleRotateting && !Revealed)
         {
             _cardManager.CurrentPuzzleState = CardManager.PuzzleState.PuzzleRotateting;
             if (GameSettings.Instance.IsSoundEffectMutedPermanently() == false)
@@ -53,7 +53,6 @@ public class Card : MonoBehaviour
             StartCoroutine(LoopRotation(45, false));
             _clicked = true;
         }
-
     }
 
     public void FlipBack()
@@ -77,8 +76,8 @@ public class Card : MonoBehaviour
     {
         var rot = 0f;
         const float dir = 1f;
-        const float rotSpeed = 180.0f;
-        const float rotSpeed1 = 90.0f;
+        const float rotSpeed = 360.0f;
+        const float rotSpeed1 = 180.0f;
         var startAngle = angle;
         var assigned = false;
 
@@ -93,7 +92,7 @@ public class Card : MonoBehaviour
                     ApplyFirstMaterial();
                     assigned = true;
                 }
-                rot += (1 * step * dir);
+                rot += 1 * step * dir;
                 yield return null;
             }
         }
@@ -103,7 +102,7 @@ public class Card : MonoBehaviour
             {
                 float step = Time.deltaTime * rotSpeed;
                 gameObject.GetComponent<Transform>().Rotate(new Vector3(0, 2, 0) * step * dir);
-                angle -= (1 * step * dir);
+                angle -= 1 * step * dir;
                 yield return null;
             }
         }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -8471261311975416685}
   - component: {fileID: 372691092820495068}
   - component: {fileID: -4581525673584224458}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BlueFish
   m_TagString: Water
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b559cf2bfca9f048b667e41f4e8ccee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchDistance: 3
+  matchDistance: 1
 --- !u!54 &-8471261311975416685
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -117,7 +117,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -127,7 +127,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &372691092820495068
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -138,7 +138,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -147,8 +147,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8.543121, y: 5.270254, z: 0.2}
-  m_Center: {x: -0.023912955, y: 0.024086745, z: 0}
+  m_Size: {x: 8.543121, y: 5.270254, z: 2.4522076}
+  m_Center: {x: -0.023912955, y: 0.024086745, z: -0.036141694}
 --- !u!82 &-4581525673584224458
 AudioSource:
   m_ObjectHideFlags: 0

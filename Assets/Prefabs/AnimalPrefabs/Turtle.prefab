@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -7396703289863545598}
   - component: {fileID: 2883057621182500791}
   - component: {fileID: 3879464572768075671}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Turtle
   m_TagString: Jungle
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b559cf2bfca9f048b667e41f4e8ccee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchDistance: 3
+  matchDistance: 1
 --- !u!54 &-7396703289863545598
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -117,7 +117,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -127,7 +127,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!65 &2883057621182500791
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -138,7 +138,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -147,8 +147,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8.986537, y: 7.743469, z: 0.2}
-  m_Center: {x: 0.029322147, y: 0.009773254, z: 0}
+  m_Size: {x: 8.986537, y: 7.743469, z: 2.6434236}
+  m_Center: {x: 0.029322147, y: 0.009773254, z: 0.030553281}
 --- !u!82 &3879464572768075671
 AudioSource:
   m_ObjectHideFlags: 0

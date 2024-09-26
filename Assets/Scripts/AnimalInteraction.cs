@@ -9,10 +9,8 @@ public class AnimalInteraction : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Reference to the sprite renderer
 
     public float matchDistance = 1.0f; // Distance within which the animal is considered matched
-    public float resetColorDelay = 2.0f; // Time delay to reset color
 
     public bool IsMatched { get; private set; } // Property to track if the animal is matched
-    private Color originalColor; // To store the original sprite color
 
     void Start()
     {
@@ -20,7 +18,6 @@ public class AnimalInteraction : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>(); // Get the sprite renderer component
         IsMatched = false;
         initialPosition = transform.position;
-        originalColor = spriteRenderer.color; // Store the original color of the sprite
     }
 
     void OnMouseDown()
@@ -41,8 +38,24 @@ public class AnimalInteraction : MonoBehaviour
         if (isDragging)
         {
             Vector3 newPosition = GetMouseWorldPosition();
-            transform.position = new Vector3(newPosition.x, newPosition.y, initialPosition.z);
+            Vector3 clampedPosition = ClampPosition(newPosition);
+            transform.position = new Vector3(clampedPosition.x, clampedPosition.y, initialPosition.z);
         }
+    }
+
+    private Vector3 ClampPosition(Vector3 position)
+    {
+        // Define the screen bounds
+        float minX = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).x;
+        float maxX = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, Camera.main.nearClipPlane)).x;
+        float minY = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).y;
+        float maxY = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, Camera.main.nearClipPlane)).y;
+
+        // Clamp the position within the screen bounds
+        position.x = Mathf.Clamp(position.x, minX, maxX);
+        position.y = Mathf.Clamp(position.y, minY, maxY);
+
+        return position;
     }
 
     private Vector3 GetMouseWorldPosition()
@@ -81,25 +94,11 @@ public class AnimalInteraction : MonoBehaviour
                 Debug.Log($"{gameObject.name} matched with habitat.");
                 GameManager.Instance.AnimalMatched();
 
-                spriteRenderer.color = originalColor; // Reset to original color when matched
                 this.enabled = false; // Optional: disable further interaction
                 return;
             }
         }
 
-        // If no match is found, turn sprite red and reset after a delay
-        if (!IsMatched)
-        {
-            spriteRenderer.color = Color.red; // Turn the sprite red if no match is found
-            initialPosition = transform.position; // Update initial position to the new position
-            StartCoroutine(ResetColorAfterDelay()); // Reset the color after a delay
-        }
-    }
-
-    // Coroutine to reset the sprite color after a delay
-    private IEnumerator ResetColorAfterDelay()
-    {
-        yield return new WaitForSeconds(resetColorDelay);
-        spriteRenderer.color = originalColor; // Reset to the original color after the delay
+        // No need to handle color change here. `DestroyOnCollision` will take care of it.
     }
 }

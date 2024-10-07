@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a22a2dc3077e045a2618f5b8a1287d, type: 3}
   m_Name: Question 17
   m_EditorClassIdentifier: 
-  question: 99 - 92 - 86 - 81 - XX
+  question: 99 - 92 - 86 - 81 - ??
   questionImages: []
   answers:
   - answerText: 80

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a22a2dc3077e045a2618f5b8a1287d, type: 3}
   m_Name: Question 10
   m_EditorClassIdentifier: 
-  question: ' 1212 - 2121 - 1212 - ****'
+  question: ' 1212 - 2121 - 1212 - ??'
   questionImages: []
   answers:
   - answerText: 1122

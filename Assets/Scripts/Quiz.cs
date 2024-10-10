@@ -178,7 +178,7 @@ public class Quiz : MonoBehaviour
             TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
             if (buttonText != null)
             {
-                buttonText.color = Color.black; // Reset text color to default (adjust as needed)
+                buttonText.color = Color.white; // Reset text color to default (adjust as needed)
             }
         }
     }
@@ -197,7 +197,7 @@ public class Quiz : MonoBehaviour
                 TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
                 if (buttonText != null)
                 {
-                    buttonText.color = Color.black; // Reset text color to default (adjust as needed)
+                    buttonText.color = Color.white; // Reset text color to default (adjust as needed)
                 }
             }
         }

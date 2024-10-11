@@ -606,6 +606,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193036774}
   m_CullTransparentMesh: 1
+--- !u!1 &215051267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 215051269}
+  - component: {fileID: 215051268}
+  m_Layer: 0
+  m_Name: ButtonBehaviour
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &215051268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215051267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89bae7e12926ed340aaa849d9cbdcd8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenuUI: {fileID: 0}
+  settingsMenuUI: {fileID: 7853022159294333474}
+  creditPanel: {fileID: 1492028320}
+  endGamePanel: {fileID: 0}
+  pauseButton: {fileID: 0}
+  gameMenuSceneName: Game Menu
+--- !u!4 &215051269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215051267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1162.4337, y: 353.84204, z: 7.641603}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &272493070
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,7 +738,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1549094923}
+      - m_Target: {fileID: 215051268}
         m_TargetAssemblyTypeName: ButtonBehaviour, Assembly-CSharp
         m_MethodName: ToggleCreditPanel
         m_Mode: 1
@@ -1094,7 +1144,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1549094923}
+      - m_Target: {fileID: 215051268}
         m_TargetAssemblyTypeName: ButtonBehaviour, Assembly-CSharp
         m_MethodName: OpenSettings
         m_Mode: 1
@@ -3552,7 +3602,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1549094924}
-  - component: {fileID: 1549094923}
   - component: {fileID: 1549094925}
   m_Layer: 0
   m_Name: GameSetting
@@ -3561,24 +3610,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1549094923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549094922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89bae7e12926ed340aaa849d9cbdcd8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenuUI: {fileID: 0}
-  settingsMenuUI: {fileID: 7853022159294333474}
-  creditPanel: {fileID: 1492028320}
-  endGamePanel: {fileID: 0}
-  pauseButton: {fileID: 0}
-  gameMenuSceneName: Game Menu
 --- !u!4 &1549094924
 Transform:
   m_ObjectHideFlags: 0
@@ -3691,7 +3722,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1549094923}
+      - m_Target: {fileID: 215051268}
         m_TargetAssemblyTypeName: ButtonBehaviour, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 5
@@ -4990,7 +5021,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1549094923}
+      - m_Target: {fileID: 215051268}
         m_TargetAssemblyTypeName: ButtonBehaviour, Assembly-CSharp
         m_MethodName: ToggleCreditPanel
         m_Mode: 1
@@ -5477,7 +5508,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1549094923}
+      - m_Target: {fileID: 215051268}
         m_TargetAssemblyTypeName: ButtonBehaviour, Assembly-CSharp
         m_MethodName: CloseSettings
         m_Mode: 1
@@ -5697,3 +5728,4 @@ SceneRoots:
   - {fileID: 1549094924}
   - {fileID: 8200438679204217302}
   - {fileID: 5222966119446824024}
+  - {fileID: 215051269}

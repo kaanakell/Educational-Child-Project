@@ -246,7 +246,7 @@ public class CardManager : MonoBehaviour
 
         isFlippingBack = false; // Reset flag after completion
     }
-    private void DestroyCard()
+    public void DestroyCard()
     {
         PuzzleRevealedNumber = RevealedState.NoRevealed;
         _revealedCardNumber = 0; // Reset the revealed card number
@@ -322,12 +322,12 @@ public class CardManager : MonoBehaviour
         }
 
         if (CurrentGameState == GameState.GameEnd)
-    {
-        if (EndGamePanel.activeSelf == false)
         {
-            ShowEndGameInformation();
+            if (EndGamePanel.activeSelf == false)
+            {
+                ShowEndGameInformation();
+            }
         }
-    }
     }
 
     private bool CheckGameEnd()

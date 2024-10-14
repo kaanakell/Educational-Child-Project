@@ -20,6 +20,7 @@ public class Card : MonoBehaviour
 
     public void SetIndex(int id) { _index = id; }
     public int GetIndex() { return _index; }
+    public ParticleSystem particleEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -184,7 +185,26 @@ public class Card : MonoBehaviour
     {
         Revealed = false;
 
+        // Instantiate and play the particle effect
+        PlayParticleEffect();
+
         yield return new WaitForSeconds(1f);
+
+        // Deactivate the card
         gameObject.SetActive(false);
     }
+
+    private void PlayParticleEffect()
+    {
+        if (particleEffect != null)
+        {
+            // Instantiate a new particle system at the card's position
+            ParticleSystem instantiatedEffect = Instantiate(particleEffect, transform.position, Quaternion.identity);
+            instantiatedEffect.Play();
+
+            // Destroy the particle system after it finishes
+            Destroy(instantiatedEffect.gameObject, instantiatedEffect.main.duration + instantiatedEffect.main.startLifetime.constantMax);
+        }
+    }
+
 }

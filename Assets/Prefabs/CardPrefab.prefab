@@ -245,3 +245,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PressSound: {fileID: 8300000, guid: bd9eff7af640a93459727cd7f1342ce2, type: 3}
   Revealed: 0
+  particleEffect: {fileID: 3207023796903601896, guid: 7e523e9cf13b06d4fa668dd6b4bcee7a, type: 3}

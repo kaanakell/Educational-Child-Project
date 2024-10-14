@@ -12,6 +12,7 @@ public class BallSpawner : MonoBehaviour
     public float spawnInterval = 0.1f;
     public string[] words;
     public TMP_InputField inputField;
+    public Button clearButton;
     public Image buttonImage;
     public Button hintButton;
     public Sprite buttonSelectedSprite;
@@ -42,37 +43,44 @@ public class BallSpawner : MonoBehaviour
 
 
     void Start()
-{
-    LoadWordsFromFile();  // Load words from the file
-    Button button = buttonImage.GetComponent<Button>();
-    button.onClick.AddListener(CheckWord);
-    buttonImage.sprite = buttonDefaultSprite;
-    hintButton.onClick.AddListener(ShowHintWord);
-    heartButton.onClick.AddListener(SpawnNewLettersIfNoWords);
-    UpdateUI();
-    StartCoroutine(SpawnBallsCoroutine());
-}
-
-
-void LoadWordsFromFile()
-{
-    TextAsset wordFile = Resources.Load<TextAsset>(wordsFileName);
-    if (wordFile != null)
     {
-        string[] wordsFromFile = wordFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-        foreach (string word in wordsFromFile)
+        LoadWordsFromFile();  // Load words from the file
+        Button button = buttonImage.GetComponent<Button>();
+        button.onClick.AddListener(CheckWord);
+        buttonImage.sprite = buttonDefaultSprite;
+        hintButton.onClick.AddListener(ShowHintWord);
+        heartButton.onClick.AddListener(SpawnNewLettersIfNoWords);
+        UpdateUI();
+        StartCoroutine(SpawnBallsCoroutine());
+        clearButton.onClick.AddListener(ClearInputField);
+    }
+
+
+    void LoadWordsFromFile()
+    {
+        TextAsset wordFile = Resources.Load<TextAsset>(wordsFileName);
+        if (wordFile != null)
         {
-            wordList.Add(word.ToLower());
+            string[] wordsFromFile = wordFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (string word in wordsFromFile)
+            {
+                wordList.Add(word.ToLower());
+            }
+        }
+        else
+        {
+            Debug.LogError("Words file not found!");
         }
     }
-    else
+
+
+    void ClearInputField()
     {
-        Debug.LogError("Words file not found!");
+        inputField.text = "";
+        inputField.image.color = Color.white;
+        buttonImage.sprite = buttonDefaultSprite;
+        ResetBallAppearances();
     }
-}
-
-
-
 
     IEnumerator SpawnBallsCoroutine()
     {
@@ -290,59 +298,105 @@ void LoadWordsFromFile()
     }
 
     public void ShowHintWord()
-{
-    Debug.Log($"ShowHintWord called. hintsUsed: {hintsUsed}, maxHints: {maxHints}");
+    {
+        Debug.Log($"ShowHintWord called. hintsUsed: {hintsUsed}, maxHints: {maxHints}");
 
-    if (hintsUsed >= maxHints)
-    {
-        Debug.Log("No more hints available.");
-        return;
-    }
+        if (hintsUsed >= maxHints)
+        {
+            Debug.Log("No more hints available.");
+            return;
+        }
 
-    currentHintWord = FindHintWord();
-    if (!string.IsNullOrEmpty(currentHintWord))
-    {
-        HighlightLettersForWord(currentHintWord);
-        hintsUsed++;
-        Debug.Log($"Hint used. New hintsUsed value: {hintsUsed}");
-        UpdateUI();
+        currentHintWord = FindHintWord();
+        if (!string.IsNullOrEmpty(currentHintWord))
+        {
+            HighlightLettersForWord(currentHintWord);
+            hintsUsed++;
+            Debug.Log($"Hint used. New hintsUsed value: {hintsUsed}");
+            UpdateUI();
+        }
+        else
+        {
+            Debug.Log("No valid hint word found.");
+        }
     }
-    else
-    {
-        Debug.Log("No valid hint word found.");
-    }
-}
 
 
     string FindHintWord()
-{
-    foreach (string word in wordList)
     {
-        if (CanFormWord(word))
+        foreach (string word in wordList)
         {
-            return word;
+            if (CanFormWord(word))
+            {
+                return word;
+            }
         }
+        return null;
     }
-    return null;
-}
 
 
     bool CanFormWord(string word)
-{
-    Dictionary<char, int> letterCounts = new Dictionary<char, int>();
-    
-    // Count letters in the spawned balls
-    foreach (GameObject ball in spawnedBalls)
     {
-        if (ball == null)
+        Dictionary<char, int> letterCounts = new Dictionary<char, int>();
+
+        // Count letters in the spawned balls
+        foreach (GameObject ball in spawnedBalls)
         {
-            continue;
+            if (ball == null)
+            {
+                continue;
+            }
+
+            TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
+            if (letterText != null)
+            {
+                char letter = letterText.text.ToLower()[0];
+                if (letterCounts.ContainsKey(letter))
+                {
+                    letterCounts[letter]++;
+                }
+                else
+                {
+                    letterCounts[letter] = 1;
+                }
+            }
         }
 
-        TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
-        if (letterText != null)
+        // Check if we can form the word with the available letters
+        Dictionary<char, int> wordLetterCounts = new Dictionary<char, int>();
+        foreach (char letter in word)
         {
-            char letter = letterText.text.ToLower()[0];
+            if (wordLetterCounts.ContainsKey(letter))
+            {
+                wordLetterCounts[letter]++;
+            }
+            else
+            {
+                wordLetterCounts[letter] = 1;
+            }
+        }
+
+        foreach (KeyValuePair<char, int> kvp in wordLetterCounts)
+        {
+            char letter = kvp.Key;
+            int requiredCount = kvp.Value;
+            if (!letterCounts.ContainsKey(letter) || letterCounts[letter] < requiredCount)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    void HighlightLettersForWord(string word)
+    {
+        hintBalls.Clear();
+        Dictionary<char, int> letterCounts = new Dictionary<char, int>();
+
+        foreach (char letter in word)
+        {
             if (letterCounts.ContainsKey(letter))
             {
                 letterCounts[letter]++;
@@ -352,77 +406,31 @@ void LoadWordsFromFile()
                 letterCounts[letter] = 1;
             }
         }
-    }
 
-    // Check if we can form the word with the available letters
-    Dictionary<char, int> wordLetterCounts = new Dictionary<char, int>();
-    foreach (char letter in word)
-    {
-        if (wordLetterCounts.ContainsKey(letter))
+        foreach (GameObject ball in spawnedBalls)
         {
-            wordLetterCounts[letter]++;
-        }
-        else
-        {
-            wordLetterCounts[letter] = 1;
-        }
-    }
-
-    foreach (KeyValuePair<char, int> kvp in wordLetterCounts)
-    {
-        char letter = kvp.Key;
-        int requiredCount = kvp.Value;
-        if (!letterCounts.ContainsKey(letter) || letterCounts[letter] < requiredCount)
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-    void HighlightLettersForWord(string word)
-{
-    hintBalls.Clear();
-    Dictionary<char, int> letterCounts = new Dictionary<char, int>();
-
-    foreach (char letter in word)
-    {
-        if (letterCounts.ContainsKey(letter))
-        {
-            letterCounts[letter]++;
-        }
-        else
-        {
-            letterCounts[letter] = 1;
-        }
-    }
-
-    foreach (GameObject ball in spawnedBalls)
-    {
-        if (ball == null)
-        {
-            continue;
-        }
-
-        TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
-        if (letterText != null)
-        {
-            char letter = letterText.text.ToLower()[0];
-            if (letterCounts.ContainsKey(letter) && letterCounts[letter] > 0)
+            if (ball == null)
             {
-                hintBalls.Add(ball);
-                SetBallAppearance(ball, true);
-                letterCounts[letter]--;
-                if (letterCounts[letter] == 0)
+                continue;
+            }
+
+            TextMeshPro letterText = ball.GetComponentInChildren<TextMeshPro>();
+            if (letterText != null)
+            {
+                char letter = letterText.text.ToLower()[0];
+                if (letterCounts.ContainsKey(letter) && letterCounts[letter] > 0)
                 {
-                    letterCounts.Remove(letter);
+                    hintBalls.Add(ball);
+                    SetBallAppearance(ball, true);
+                    letterCounts[letter]--;
+                    if (letterCounts[letter] == 0)
+                    {
+                        letterCounts.Remove(letter);
+                    }
                 }
             }
         }
     }
-}
 
 
     void UpdateUI()
@@ -446,7 +454,7 @@ void LoadWordsFromFile()
                 Destroy(ball);
             }
         }
-        if(gamesPlayed % 3 == 0)
+        if (gamesPlayed % 3 == 0)
         {
             //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
             AdManager.Instance.ShowInterstitialAd();

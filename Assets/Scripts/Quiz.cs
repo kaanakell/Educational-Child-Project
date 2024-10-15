@@ -205,13 +205,24 @@ public class Quiz : MonoBehaviour
 
     void EndGame()
     {
-        endGamePanel.SetActive(true); // Show the end game panel
-        // Add any additional end game logic here, like stopping the game or showing scores.
+        // Calculate the off-screen position for the panel
+        float offScreenPosition = Screen.height + 150f; // Adjust based on panel size and screen height
+
+        // Set the initial position of the endGamePanel off-screen
+        endGamePanel.transform.localPosition = new Vector3(0, offScreenPosition, 0);
+
+        // Activate the panel and start the sliding animation
+        endGamePanel.SetActive(true);
+        endGamePanel.LeanMoveLocalY(0, 0.5f).setEaseInExpo().setIgnoreTimeScale(true);
+
+        // Additional end game logic (e.g., stopping the game, showing scores)
         gamesPlayed++;
-        if(gamesPlayed % 3 == 0)
+
+        // Show interstitial ad after every 3 games
+        if (gamesPlayed % 3 == 0)
         {
-            //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
             AdManager.Instance.ShowInterstitialAd();
         }
     }
+
 }

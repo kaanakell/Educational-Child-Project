@@ -12,11 +12,11 @@ public class ButtonBehaviour : MonoBehaviour
 
     public GameObject creditPanel;
 
-    public GameObject endGamePanel; 
+    public GameObject endGamePanel;
     public Button pauseButton;
 
     private int gameRestart;
-    private const string GameRestartKey = "GameRestart"; 
+    private const string GameRestartKey = "GameRestart";
     public string gameMenuSceneName = "Game Menu";
 
     void Start()
@@ -26,7 +26,7 @@ public class ButtonBehaviour : MonoBehaviour
 
     public void TogglePause()
     {
-        if (endGamePanel.activeSelf) 
+        if (endGamePanel.activeSelf)
         {
             Debug.Log("Pause menu cannot be opened because the end game panel is active.");
             return;
@@ -42,48 +42,74 @@ public class ButtonBehaviour : MonoBehaviour
         }
     }
 
-    public void Resume()
-    {
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
-    }
-
     public void Pause()
     {
-        // Null check for pauseMenuUI
         if (pauseMenuUI == null)
         {
             Debug.LogError("Pause menu UI is not assigned or is missing.");
             return;
         }
 
-        // Null check for endGamePanel
-        if (endGamePanel == null)
-        {
-            Debug.LogError("End game panel is not assigned or is missing.");
-            return;
-        }
-
-        // Check if the end game panel is active
-        if (endGamePanel.activeSelf) 
+        if (endGamePanel.activeSelf)
         {
             Debug.Log("Pause menu cannot be opened because the end game panel is active.");
             return;
         }
 
-        // Proceed to pause the game if all checks pass
+        // Activate pause menu first
         pauseMenuUI.SetActive(true);
+
+        // Calculate the off-screen position
+        float offScreenPosition = Screen.height;
+
+        // Set the initial position of the pause menu off-screen
+        pauseMenuUI.transform.localPosition = new Vector3(0, offScreenPosition * 1.25f, 0);
+
+        // Animate the pause menu sliding down from the top
+        pauseMenuUI.LeanMoveLocalY(0, 0.5f).setEaseInExpo().setIgnoreTimeScale(true);
+
+
         Time.timeScale = 0f;
         isPaused = true;
     }
 
+
+    public void Resume()
+    {
+        // Calculate the off-screen position
+        float offScreenPosition = Screen.height;
+
+        // Animate the pause menu sliding up to the top
+        pauseMenuUI.LeanMoveLocalY(offScreenPosition, 0.5f).setEaseInExpo().setOnComplete(() =>
+        {
+            pauseMenuUI.SetActive(false);
+        });
+
+        Time.timeScale = 1f;
+        isPaused = false;
+    }
+
     public void ShowEndGamePanel()
     {
+        // Calculate the off-screen position
+        float offScreenPosition = Screen.height + 150f;  // You can adjust this value to push the panel further off-screen
+
+        // Set the initial position of the end game panel off-screen
+        endGamePanel.transform.localPosition = new Vector3(0, offScreenPosition, 0);
+
+        // Activate the panel AFTER setting its position off-screen
         endGamePanel.SetActive(true);
-        Time.timeScale = 0f;  // Pause the game when the end game panel is shown
-        DisablePauseButton(); // Disable the pause button when the end game panel is active
+
+        // Animate the end game panel sliding down from the top
+        endGamePanel.LeanMoveLocalY(0, 0.5f).setEaseInExpo().setIgnoreTimeScale(true);
+
+        // Pause the game when the end game panel is shown
+        Time.timeScale = 0f;
+
+        // Disable the pause button when the end game panel is active
+        DisablePauseButton();
     }
+
 
     private void DisablePauseButton()
     {
@@ -111,7 +137,7 @@ public class ButtonBehaviour : MonoBehaviour
     public void RestartGame()
     {
         gameRestart++;
-        PlayerPrefs.SetInt(GameRestartKey, gameRestart); 
+        PlayerPrefs.SetInt(GameRestartKey, gameRestart);
 
         if (AdManager.Instance != null)
         {
@@ -120,8 +146,8 @@ public class ButtonBehaviour : MonoBehaviour
             if (gameRestart >= 3)
             {
                 AdManager.Instance.ShowInterstitialAd();
-                gameRestart = 0; 
-                PlayerPrefs.SetInt(GameRestartKey, gameRestart); 
+                gameRestart = 0;
+                PlayerPrefs.SetInt(GameRestartKey, gameRestart);
             }
         }
         else
@@ -145,6 +171,15 @@ public class ButtonBehaviour : MonoBehaviour
     {
         if (!isSettingsPanelActive)
         {
+            // Calculate the off-screen position
+            float offScreenPosition = Screen.height;
+
+            // Set the initial position of the settings menu
+            settingsMenuUI.transform.localPosition = new Vector3(0, offScreenPosition, 0);
+
+            // Animate the settings menu sliding down from the below
+            settingsMenuUI.LeanMoveLocalY(0, 0.5f).setEaseOutExpo();
+
             settingsMenuUI.SetActive(true);
             isSettingsPanelActive = true;
         }
@@ -152,12 +187,46 @@ public class ButtonBehaviour : MonoBehaviour
 
     public void CloseSettings()
     {
-        settingsMenuUI.SetActive(false);
-        isSettingsPanelActive = false;
+        if (isSettingsPanelActive)
+        {
+            // Calculate the off-screen position
+            float offScreenPosition = Screen.height;
+
+            // Animate the settings menu sliding up to the below
+            settingsMenuUI.LeanMoveLocalY(offScreenPosition, 0.5f).setEaseInExpo().setOnComplete(() =>
+            {
+                settingsMenuUI.SetActive(false);
+                isSettingsPanelActive = false;
+            });
+        }
     }
 
     public void ToggleCreditPanel()
     {
-        creditPanel.SetActive(!creditPanel.activeSelf);
+        if (creditPanel != null)
+        {
+            if (creditPanel.activeSelf)
+            {
+                // Animate hiding the credit panel
+                creditPanel.LeanMoveLocalX(-Screen.width, 0.5f).setEaseInExpo().setIgnoreTimeScale(true).setOnComplete(() =>
+                {
+                    creditPanel.SetActive(false); // Disable the panel after the animation
+                });
+            }
+            else
+            {
+                // Set the initial position of the credit panel off-screen (to the left)
+                creditPanel.transform.localPosition = new Vector3(-Screen.width * 1.25f, 0, 0);
+                creditPanel.SetActive(true); // Activate the panel before animating
+
+                // Animate showing the credit panel
+                creditPanel.LeanMoveLocalX(0, 0.5f).setEaseInExpo().setIgnoreTimeScale(true);
+            }
+        }
+        else
+        {
+            Debug.LogError("Credit Panel is not assigned!");
+        }
     }
+
 }

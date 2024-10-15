@@ -23,9 +23,17 @@ public class TutorialPanel : MonoBehaviour
 
     public void CloseTutorial()
     {
-        tutorialPanel.SetActive(false); // Hide the panel
         Time.timeScale = 1f; // Resume the game
         closeButton.onClick.RemoveListener(CloseTutorial); // Remove listener to prevent memory leaks
+
+        // Calculate the off-screen position
+        float offScreenPosition = -Screen.height * 2f; // Adjust this value to your liking
+
+        // Animate the panel moving off-screen and then deactivate it
+        tutorialPanel.LeanMoveLocalY(offScreenPosition, 2f).setEaseOutExpo().setOnComplete(() =>
+        {
+            tutorialPanel.SetActive(false);
+        });
     }
 }
 

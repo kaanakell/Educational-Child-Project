@@ -352,26 +352,42 @@ public class CardManager : MonoBehaviour
 
     private void ShowEndGameInformation()
     {
+        // Calculate the off-screen position for the panel
+        float offScreenPosition = Screen.height + 150f; // Adjust based on your panel size and screen height
+
+        // Set the initial position of the EndGamePanel to off-screen
+        EndGamePanel.transform.localPosition = new Vector3(0, offScreenPosition, 0);
+
+        // Activate the panel and elements
         EndGamePanel.SetActive(true);
         YourScoreText.SetActive(true);
         TimerObject.SetActive(false);
 
-        var timer = _gameTimer.elapsedTime; // Access the elapsed time variable directly
+        // Animate the panel to slide down into view
+        EndGamePanel.LeanMoveLocalY(0, 0.5f).setEaseInExpo().setIgnoreTimeScale(true);
+
+        // Access the elapsed time variable and format it
+        var timer = _gameTimer.elapsedTime;
         var minutes = Mathf.Floor(timer / 60);
         var seconds = Mathf.RoundToInt(timer % 60);
         var newText = minutes.ToString("00") + ":" + seconds.ToString("00");
+
+        // Display the elapsed time in the EndTimeText
         Debug.Log("EndTimeText: " + EndTimeText);
         EndTimeText.GetComponent<TextMeshProUGUI>().text = newText;
 
+        // Update best time if the current timer is better
         if (timer < PlayerPrefs.GetFloat("Best Time", 00))
         {
             PlayerPrefs.SetFloat("Best Time", timer);
+
             var bestMinutes = Mathf.Floor(PlayerPrefs.GetFloat("Best Time", 0) / 60);
             var bestSeconds = Mathf.RoundToInt(PlayerPrefs.GetFloat("Best Time", 0) % 60);
             var formattedBestTime = bestMinutes.ToString("00") + ":" + bestSeconds.ToString("00");
             bestTime.text = formattedBestTime;
         }
     }
+
 
     private void SpawnCardMesh(int rows, int columns, Vector2 Pos, Vector2 offset, bool scaleDown)
     {

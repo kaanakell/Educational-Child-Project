@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    private int totalAnimals;
+    private int totalAnimals; // This should reflect the total number of animals across all groups
     private int matchedAnimals;
     private bool isGameEnded = false; // Flag to indicate if the game has ended
     public int gamePlayed = 1;
@@ -33,13 +33,8 @@ public class GameManager : MonoBehaviour
     {
         matchedAnimals = 0;
         isGameEnded = false;
-        UpdateTotalAnimalsCount();
-        //AdsManager.Instance.bannerAds.ShowBannerAd();
-    }
-
-    public void UpdateTotalAnimalsCount()
-    {
-        totalAnimals = FindObjectsOfType<AnimalInteraction>().Length;
+        // Set total animals based on the array in AnimalInstantiation
+        totalAnimals = AnimalInstantiation.Instance.GetTotalAnimalCount();
         Debug.Log($"Total Animals: {totalAnimals}");
     }
 
@@ -55,9 +50,8 @@ public class GameManager : MonoBehaviour
         if (matchedAnimals >= totalAnimals && !isGameEnded)
         {
             EndGame();
-            if(gamePlayed % 3 == 0)
+            if (gamePlayed % 3 == 0)
             {
-                //AdsManager.Instance.interstitialAds.ShowInterstitialAd();
                 AdManager.Instance.ShowInterstitialAd();
             }
         }
@@ -65,19 +59,19 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        if (isGameEnded) return; // Ensure EndGame is only called once
+        if (isGameEnded) return;
 
-        isGameEnded = true; // Set the flag to true to prevent multiple calls
+        isGameEnded = true;
         Debug.Log("End game condition met.");
-        EndGameManager.Instance.ShowEndGamePanel(); // Notify EndGameManager to show the end game panel
+        EndGameManager.Instance.ShowEndGamePanel();
     }
 
     public void RestartGame()
     {
         isGameEnded = false;
         matchedAnimals = 0;
-        Time.timeScale = 1f; // Reset the time scale
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void MuteSoundEffectPermanently(bool muted)
@@ -85,8 +79,9 @@ public class GameManager : MonoBehaviour
         _muteFxPermanently = muted;
     }
 
-    public bool IsSoundEffectMutedPermanently() 
+    public bool IsSoundEffectMutedPermanently()
     {
         return _muteFxPermanently;
     }
 }
+

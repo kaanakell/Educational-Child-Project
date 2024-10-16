@@ -9,7 +9,6 @@ public class AnimalInteraction : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Reference to the sprite renderer
 
     public float matchDistance = 1.0f; // Distance within which the animal is considered matched
-
     public bool IsMatched { get; private set; } // Property to track if the animal is matched
 
     void Start()
@@ -92,13 +91,39 @@ public class AnimalInteraction : MonoBehaviour
                 // The animal is within matchDistance of a habitat
                 IsMatched = true;
                 Debug.Log($"{gameObject.name} matched with habitat.");
-                GameManager.Instance.AnimalMatched();
 
-                this.enabled = false; // Optional: disable further interaction
+                // Play LeanTween animation after matching
+                PlayMatchAnimation();
+
                 return;
             }
         }
 
         // No need to handle color change here. `DestroyOnCollision` will take care of it.
     }
+
+    public void PlayMatchAnimation()
+    {
+        // Disable interaction while the animation is playing
+        this.enabled = false;
+
+        // Example: scale up, rotate, then scale down to original size with a small rotation effect
+        Vector3 originalScale = transform.localScale;
+        float rotationAngle = 30f; // Set the desired rotation angle
+
+        LeanTween.scale(gameObject, originalScale * 1.5f, 0.2f).setEaseOutBack();
+        LeanTween.rotateZ(gameObject, rotationAngle, 0.1f).setEaseInOutSine().setLoopPingPong(2).setOnComplete(() =>
+        {
+            LeanTween.scale(gameObject, originalScale, 0.2f).setEaseInBack().setOnComplete(() =>
+            {
+                // Reactivate the script or proceed with the match logic after the animation
+                GameManager.Instance.AnimalMatched();
+
+                // Destroy the animal after animation completes
+                Destroy(gameObject);
+            });
+        });
+    }
+
+
 }

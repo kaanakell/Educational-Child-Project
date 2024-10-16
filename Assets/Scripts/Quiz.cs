@@ -14,6 +14,7 @@ public class Quiz : MonoBehaviour
 
     [Header("ProgressBar")]
     [SerializeField] Slider progressBar;
+    [SerializeField] ParticleSystem particalSystem;
 
     private QuestionSO currentQuestion;
     private List<QuestionSO> availableQuestions;
@@ -154,8 +155,15 @@ public class Quiz : MonoBehaviour
             availableQuestions.Remove(currentQuestion);
             questions.Remove(currentQuestion);
 
-            // Increment the progress bar
-            progressBar.value++;
+            particalSystem.Play();
+
+            // Fill the progress bar smoothly
+            float currentValue = progressBar.value;
+            float targetValue = currentValue + 1;
+            LeanTween.value(gameObject, currentValue, targetValue, 1f).setOnUpdate((float val) =>
+            {
+                progressBar.value = val;
+            });
 
             // Proceed to the next question
             Invoke("GetNextQuestion", 1f); // Delay before loading next question
